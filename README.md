@@ -7,7 +7,7 @@
 * 
 
 ### EQUIPO 2: 
-* PRODUCT OWNER: Acacia Sánchez Pastur 
+* PRODUCT OWNER: Acacia Sánchez Pastur [Github](https://github.com/Acacia-Sanchez)
 * SCRUM MASTER: Juan Camilo
 * 
 
