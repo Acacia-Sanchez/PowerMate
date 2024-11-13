@@ -1,0 +1,1 @@
+INSERT INTO testdb.users (username,password,role) VALUES ('TEST','TEST','TEST');
