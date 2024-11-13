@@ -20,7 +20,7 @@ public class Device {
     @Column(name = "user_id", nullable = false)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private Long userId;
 
     @Column(name = "device_name", nullable = false)
     private String name;
@@ -31,7 +31,7 @@ public class Device {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    public Device(Long id, User userId, String name, Boolean status) {
+    public Device(Long id, Long userId, String name, Boolean status) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -50,11 +50,11 @@ public class Device {
         this.id = id;
     }
 
-    public User getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

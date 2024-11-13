@@ -14,7 +14,15 @@ public class DeviceTest {
         assertEquals(1L, device.getId());
     }
 
-    // TODO FALTA USER ID
+    @Test
+    void testDeviceGetUserId() {
+        User user = new User(1L, "Prueba", "1234", "admin");
+        Device device = new Device();
+
+        device.setUserId(user.getId());
+
+        assertEquals(device.getUserId(), user.getId());
+    }
 
     @Test
     void testDeviceName() {
@@ -37,6 +45,6 @@ public class DeviceTest {
         Device device = new Device();
 
         device.setStatus(true);
-        assertEquals(true, device.getPower());
+        assertEquals(true, device.isStatus());
     }
 }
