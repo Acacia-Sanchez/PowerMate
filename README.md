@@ -4,7 +4,7 @@
 ### EQUIPO 1: 
 * PRODUCT OWNER: Andrés 
 * SCRUM MASTER: Roberto
-* 
+* DEVELOPER: Maria [Github](https://github.com/strawmery)
 
 ### EQUIPO 2: 
 * PRODUCT OWNER: Acacia Sánchez Pastur [Github](https://github.com/Acacia-Sanchez)
