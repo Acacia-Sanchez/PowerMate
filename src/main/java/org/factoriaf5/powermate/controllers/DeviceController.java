@@ -32,13 +32,13 @@ public class DeviceController {
     }
 
     @PutMapping(path = "/admin/devices/{id}")
-    public ResponseEntity<Device> updateDevice(@RequestParam Long deviceId) {
-        return new ResponseEntity<>(service.updateDevice(deviceId), HttpStatus.OK);
+    public ResponseEntity<Device> updateDevice(@RequestParam Device device, Long deviceId) {
+        return new ResponseEntity<>(service.updateDevice(device, deviceId), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/devices/{id}")
-    public ResponseEntity<Device> updateStatus(@RequestParam Long deviceId) {
-        return new ResponseEntity<>(service.updateStatus(deviceId), HttpStatus.OK);
+    public ResponseEntity<Device> updateStatus(@RequestParam Long deviceId, Boolean status) {
+        return new ResponseEntity<>(service.updateStatus(deviceId, status), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/admin/devices/{id}")
