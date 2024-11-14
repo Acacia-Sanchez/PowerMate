@@ -3,6 +3,7 @@ package org.factoriaf5.powermate.controllers;
 import java.util.List;
 
 import org.factoriaf5.powermate.models.Device;
+import org.factoriaf5.powermate.services.DeviceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,17 +33,18 @@ public class DeviceController {
     }
 
     @PutMapping(path = "/admin/devices/{id}")
-    public ResponseEntity<Device> updateDevice(@RequestParam Long id) {
-        return new ResponseEntity<>(service.updateDevice(), HttpStatus.OK);
+    public ResponseEntity<Device> updateDevice(@RequestParam Device device, Long id) {
+        return new ResponseEntity<>(service.updateDevice(device, id), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/devices/{id}")
-    public ResponseEntity<Device> updateStatus(@RequestParam Long id) {
-        return new ResponseEntity<>(service.updateStatus(), HttpStatus.OK);
+    public ResponseEntity<Device> updateStatus(@RequestParam Long id, boolean status) {
+        return new ResponseEntity<>(service.updateStatus(id, status), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/admin/devices/{id}")
-    public ResponseEntity<Device> deleteDevice(@RequestParam Long id) {
-        return new ResponseEntity<>(service.deleteDevice(), HttpStatus.OK);
+    public ResponseEntity<Void> deleteDevice(@RequestParam Long id) {
+        service.deleteDevice(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
