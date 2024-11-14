@@ -1,6 +1,7 @@
 package org.factoriaf5.powermate.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.repositories.DeviceRepository;
@@ -17,6 +18,10 @@ public class DeviceService {
 
     public List<Device> getAll(){
         return repository.findAll();
+    }
+
+    public Optional<Device> getDevicesById(Long id){
+        return repository.findById(id);
     }
 
     public Device createDevice(Device device){
