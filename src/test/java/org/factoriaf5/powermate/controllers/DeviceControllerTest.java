@@ -21,12 +21,14 @@ public class DeviceControllerTest {
     
     @BeforeEach
     void setUp() {
-        mockDevice = new Device();
+        mockDevice = new Device(1L, 1L, "Test Device", true);
     }
     
     @Test
     void testAddDevice() {
-    
+        when(service.addDevice()).thenreturn(mockDevice);
+
+        
     }
 
     @Test
