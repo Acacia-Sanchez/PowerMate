@@ -1,9 +1,11 @@
 package org.factoriaf5.powermate.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.repositories.DeviceRepository;
+import org.springframework.http.HttpStatus;
 
 public class DeviceService {
 
@@ -19,6 +21,10 @@ public class DeviceService {
         return repository.findAll();
     }
 
+    public Optional<Device> getDevicesById(Long id){
+        return repository.findById(id);
+    }
+
     public Device createDevice(Device device){
         return repository.save(device);
     }
@@ -32,7 +38,7 @@ public class DeviceService {
             existingDevice.setStatus(device.isStatus());
             return repository.save(existingDevice);
         }else{
-            throw new RuntimeException("User not found with id: " + id);
+            throw new RuntimeException("User not found with id: " + id + ". Status: " + HttpStatus.NOT_FOUND);
         }
     }
 
@@ -42,7 +48,7 @@ public class DeviceService {
             device.setStatus(status);
             return repository.save(device);
         }else{
-            throw new RuntimeException("Device not found with id: " + deviceId);
+            throw new RuntimeException("Device not found with id: " + deviceId + ". Status: " + HttpStatus.NOT_FOUND);
         }
     }
 
@@ -51,7 +57,7 @@ public class DeviceService {
         if(device!=null){
             repository.deleteById(deviceId);
         }else{
-            throw new RuntimeException("Device not found with id: " + deviceId);
+            throw new RuntimeException("Device not found with id: " + deviceId + ". Status: " + HttpStatus.NOT_FOUND);
         }
     }
 }
