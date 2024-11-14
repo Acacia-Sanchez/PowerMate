@@ -22,6 +22,10 @@ public Alerts(){
 
 }
 
+public Alerts(long id){
+    this.id=id;    
+}
+
 public Alerts(long id, long userid, long deviceid, double threshold){
     this.id = id;
     this.userid = userid;
