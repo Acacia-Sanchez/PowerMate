@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api")
 public class DeviceController {
+
     private final DeviceService service;
+
     @PostMapping(path = "/admin/devices")
     public ResponseEntity<Device> addDevice(@RequestBody Device deviceId) {
         return new ResponseEntity<>(service.createDevice(deviceId), HttpStatus.CREATED);

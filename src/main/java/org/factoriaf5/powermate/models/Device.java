@@ -31,11 +31,12 @@ public class Device {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    public Device(Long id, Long userId, String name, Boolean status) {
+    public Device(Long id, Long userId, String name, Boolean status, int power) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.status = status;
+        this.power = power;
     }
 
     public Device() {
