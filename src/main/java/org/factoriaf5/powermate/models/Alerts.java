@@ -1,12 +1,11 @@
 package org.factoriaf5.powermate.models;
 
-import java.io.Serializable;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "alerts")
-public class Alerts implements Serializable {
-//private static final long serialVersionUID = 1L;
+public class Alerts {
+
 
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +16,18 @@ private Long userid;
 @Column(name = "device_id")
 private long deviceid;
 @Column(name = "threshold")
-
 private double threshold;
+
+public Alerts(){
+
+}
+
+public Alerts(long id, long userid, long deviceid, double threshold){
+    this.id = id;
+    this.userid = userid;
+    this.deviceid = deviceid;
+    this.threshold = threshold;
+}
 
 public Long getId() {
     return id;
