@@ -1,29 +1,30 @@
 package org.factoriaf5.powermate.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 
-public class Alerts {
+public class AlertsServices {
 
-    @Autowired
-
+@Autowired
 private AlertRepository alertRepository;
 
-public List<Alert> findByDeviceId( long deviceId) {
+public List<AlertsServices> findByDeviceId( long deviceId) {
     return alertRepository.findByDeviceId(deviceId);
 
 }
 
 
-public List<Alert> findByThresholdGreaterThan( double threshold) {
+public List<AlertsServices> findByThresholdGreaterThan( double threshold) {
     return alertRepository.findByThresholdGreaterThan(threshold);
 
 }
 
 
-public Alert createAlert(Long userId, Long deviceId, double threshold) {
+public AlertsServices createAlert(Long userId, Long deviceId, double threshold) {
     Alert alert = new Alert();
     alert.setUserId(userId);
     alert.setDeviceId(deviceId);
