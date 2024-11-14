@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api")
 public class DeviceController {
 
-    DeviceService service;
+    private final DeviceService service;
 
     @PostMapping(path = "/admin/devices")
-    public ResponseEntity<Device> addDevice(@RequestBody Device device) {
-        return new ResponseEntity<>(service.createDevice(device), HttpStatus.CREATED);
+    public ResponseEntity<Device> addDevice(@RequestBody Device deviceId) {
+        return new ResponseEntity<>(service.createDevice(deviceId), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/devices")
@@ -32,17 +32,17 @@ public class DeviceController {
     }
 
     @PutMapping(path = "/admin/devices/{id}")
-    public ResponseEntity<Device> updateDevice(@RequestParam Long id) {
-        return new ResponseEntity<>(service.updateDevice(), HttpStatus.OK);
+    public ResponseEntity<Device> updateDevice(@RequestParam Long deviceId) {
+        return new ResponseEntity<>(service.updateDevice(deviceId), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/devices/{id}")
-    public ResponseEntity<Device> updateStatus(@RequestParam Long id) {
-        return new ResponseEntity<>(service.updateStatus(), HttpStatus.OK);
+    public ResponseEntity<Device> updateStatus(@RequestParam Long deviceId) {
+        return new ResponseEntity<>(service.updateStatus(deviceId), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/admin/devices/{id}")
-    public ResponseEntity<Device> deleteDevice(@RequestParam Long id) {
-        return new ResponseEntity<>(service.deleteDevice(), HttpStatus.OK);
+    public ResponseEntity<Device> deleteDevice(@RequestParam Long deviceId) {
+        return new ResponseEntity<>(service.deleteDevice(deviceId), HttpStatus.OK);
     }
 }
