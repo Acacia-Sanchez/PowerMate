@@ -21,27 +21,27 @@ public class DeviceController {
 
     DeviceService service;
 
-    @PostMapping(path = "/admin/device")
+    @PostMapping(path = "/admin/devices")
     public ResponseEntity<Device> addDevice(@RequestBody Device device) {
         return new ResponseEntity<>(service.createDevice(device), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/device")
+    @GetMapping(path = "/devices")
     public ResponseEntity<List<Device>> getDevice() {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/admin/device/{id}")
+    @PutMapping(path = "/admin/devices/{id}")
     public ResponseEntity<Device> updateDevice(@RequestParam Long id) {
         return new ResponseEntity<>(service.updateDevice(), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/device/{id}")
+    @PatchMapping(path = "/devices/{id}")
     public ResponseEntity<Device> updateStatus(@RequestParam Long id) {
         return new ResponseEntity<>(service.updateStatus(), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/admin/device/{id}")
+    @DeleteMapping(path = "/admin/devices/{id}")
     public ResponseEntity<Device> deleteDevice(@RequestParam Long id) {
         return new ResponseEntity<>(service.deleteDevice(), HttpStatus.OK);
     }
