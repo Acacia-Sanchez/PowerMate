@@ -29,19 +29,17 @@ public class DeviceService {
         return repository.save(device);
     }
 
-    public Device updateDevice(Device device, long id){
-        Device existingDevice = repository.findById(device.getId()).orElse(null);
-
+    public Device updateDevice(Device device, long deviceId){
+        Device existingDevice = repository.findById(deviceId).orElse(null);
         if(existingDevice!=null){
             existingDevice.setName(device.getName());
             existingDevice.setPower(device.getPower());
             existingDevice.setStatus(device.isStatus());
             return repository.save(existingDevice);
         }else{
-            throw new RuntimeException("User not found with id: " + id + ". Status: " + HttpStatus.NOT_FOUND);
+            throw new RuntimeException("Device not found with id: " + deviceId + ". Status: " + HttpStatus.NOT_FOUND);
         }
     }
-
     public Device updateStatus(Long deviceId, boolean status){
         Device device = repository.findById(deviceId).orElse(null);
         if(device!=null){
@@ -51,7 +49,6 @@ public class DeviceService {
             throw new RuntimeException("Device not found with id: " + deviceId + ". Status: " + HttpStatus.NOT_FOUND);
         }
     }
-
     public void deleteDevice(Long deviceId){
         Device device = repository.findById(deviceId).orElse(null);
         if(device!=null){
