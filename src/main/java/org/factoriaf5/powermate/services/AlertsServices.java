@@ -48,6 +48,13 @@ public boolean checkAlert(Long deviceId, double currentConsumption) {
     }
     return false;
 
+}
+public AlertsServices updateAlert(Long alertId, double threshold) {
+    AlertsServices alert = alertRepository.findById(alertId).orElseThrow();
+    alert.setThreshold(threshold);
+    return alertRepository.save(alert);
+
+
 
 
 
