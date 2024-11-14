@@ -1,6 +1,7 @@
 package org.factoriaf5.powermate.services;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,27 @@ public class ScheduleService {
     }
 
 
-    public void changeStatusOn(LocalDateTime startTime){
+    public void changeStatusOn(LocalDateTime startTime) {
         LocalDateTime currentTime = LocalDateTime.now();
-        if (startTime == currentTime){
-        DeviceController.setIsStatus = true;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        String formattedStartTime = startTime.format(formatter);
+        String formattedCurrentTime = currentTime.format(formatter);
+
+        if (formattedStartTime.equals(formattedCurrentTime)) {
+            Device.setIsStatus = true;
         }
-        
     }
 
-    public void changeStatusOff(LocalDateTime endTime){
+    public void changeStatusOff(LocalDateTime endTime) {
         LocalDateTime currentTime = LocalDateTime.now();
-        if (endTime == currentTime){
-            DeviceController.setIsStatus = false;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        String formattedEndTime = endTime.format(formatter);
+        String formattedCurrentTime = currentTime.format(formatter);
+
+        if (formattedEndTime.equals(formattedCurrentTime)) {
+            Device.setIsStatus = false;
         }
     }
 
