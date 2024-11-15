@@ -9,5 +9,4 @@ class PowermateApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
