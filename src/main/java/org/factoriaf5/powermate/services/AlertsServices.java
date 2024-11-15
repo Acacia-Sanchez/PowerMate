@@ -3,20 +3,22 @@ package org.factoriaf5.powermate.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 
 public class AlertsServices {
+    private final AlertRepository alertRepository;
 
-@Autowired
-private AlertRepository alertRepository;
-
-public List<AlertsServices> findByDeviceId( long deviceId) {
-    return alertRepository.findByDeviceId(deviceId);
-
+    @Autowired
+    public AlertsServices(AlertRepository alertRepository) {
+        this.alertRepository = alertRepository;
+    }
+public interface AlertRepository extends JpaRepository<AlertsServices, Long> {
+    List<AlertsServices> findByDeviceId(long deviceId);
+    List<AlertsServices> findByThresholdGreaterThan(double threshold);
 }
-
 
 public List<AlertsServices> findByThresholdGreaterThan( double threshold) {
     return alertRepository.findByThresholdGreaterThan(threshold);
