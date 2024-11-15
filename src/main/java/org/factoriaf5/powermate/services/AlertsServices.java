@@ -32,8 +32,8 @@ public List<Alerts> findByThresholdGreaterThan(double threshold) {
 
 public Alerts createAlert(Long userId, Long deviceId, double threshold) {
     Alerts alert = new Alerts();
-    alert.setUserId(userId);
-    alert.setDeviceId(deviceId);
+    alert.setUserid(userId);
+    alert.setDeviceid(deviceId);
     alert.setThreshold(threshold);
     return alertRepository.save(alert);
 }
@@ -47,7 +47,7 @@ public boolean checkAlert(Long deviceId, double currentConsumption) {
     List<Alerts> alerts = alertRepository.findByDeviceId(deviceId);
     for (Alerts alert : alerts) {
         if (currentConsumption > alert.getThreshold()) {
-            System.out.println("Alera activada para el dispositivo " + deviceId+ " del usuario " + alert.getUserId());
+            System.out.println("Alera activada para el dispositivo " + deviceId+ " del usuario " + alert.getUserid());
             return true;
         }
     }
