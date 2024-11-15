@@ -16,12 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final UserService userService;
-
-    public SecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -29,7 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(request ->
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(request ->
         request.requestMatchers("/api/admin/**").hasRole("ADMIN").anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
         return http.build();
     }
