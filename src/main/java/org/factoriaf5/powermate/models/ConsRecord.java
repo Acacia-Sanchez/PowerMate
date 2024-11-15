@@ -1,19 +1,10 @@
 package org.factoriaf5.powermate.models;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
 @Entity
-@Table(name = "consumption_record")
-public class ConsumptionRecord {
+public class ConsRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +14,13 @@ public class ConsumptionRecord {
     @JoinColumn(name = "device_id", nullable = false)
     private Device device;
 
-    @Column(nullable = false)
     private double consumption;
-
-    @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    public ConsumptionRecord() {
+    public ConsRecord() {
     }
 
-    public ConsumptionRecord(Device device, double consumption, LocalDateTime timestamp) {
+    public ConsRecord(Device device, double consumption, LocalDateTime timestamp) {
         this.device = device;
         this.consumption = consumption;
         this.timestamp = timestamp;
@@ -40,10 +28,6 @@ public class ConsumptionRecord {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Device getDevice() {
