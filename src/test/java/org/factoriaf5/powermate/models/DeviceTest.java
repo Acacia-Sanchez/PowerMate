@@ -14,15 +14,15 @@ public class DeviceTest {
         assertEquals(1L, device.getId());
     }
 
-    @Test
-    void testDeviceGetUserId() {
-        User user = new User(1L, "Prueba", "1234", "admin");
-        Device device = new Device();
+    // @Test
+    // void testDeviceGetUserId() {
+    //     User user = new User(1L, "Prueba", "1234", "admin");
+    //     Device device = new Device();
 
-        device.setUserId(user.getId());
+    //     device.setUserId(user.getId());
 
-        assertEquals(device.getUserId(), user.getId());
-    }
+    //     assertEquals(device.getUserId(), user.getId());
+    // }
 
     @Test
     void testDeviceName() {

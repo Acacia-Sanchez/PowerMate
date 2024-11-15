@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DeviceService {
 
     DeviceRepository repository;
