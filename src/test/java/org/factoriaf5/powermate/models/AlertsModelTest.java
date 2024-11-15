@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class AlertsTest {
+public class AlertsModelTest {
 
     @Test
     void testConstructorAndGetters() {
         //testeamos el constructor, dándole qué valor tendría cada una de las variables siguiendo el orden de id, userid, deviceid y threshold.
-        Alerts alert = new Alerts(1L, 2L, 3L, 75.5);
+        AlertsModel alert = new AlertsModel(1L, 2L, 3L, 75.5);
         //Verificamos que los valores fueron asignados correctamente.
         assertThat(alert.getId(), is(1L));
         assertThat(alert.getUserid(), is(2L));
@@ -21,7 +21,7 @@ public class AlertsTest {
     @Test
     void testSetters() {
     //Creamos una instancia vacía
-        Alerts alert =new Alerts();
+        AlertsModel alert =new AlertsModel();
 
         //usamos los setters para asignar valores
         alert.setId(10L);
@@ -39,7 +39,7 @@ public class AlertsTest {
     @Test
     void testDefauldConstructor() {
     //Creamos una instancia usando el constructor vacío
-    Alerts alert = new Alerts();
+    AlertsModel alert = new AlertsModel();
     
     //Verificamos que los valores iniciales sean nulos o por defecto
     assertThat(alert.getId(), is (nullValue()));

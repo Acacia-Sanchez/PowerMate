@@ -2,7 +2,7 @@ package org.factoriaf5.powermate.services;
 
 import java.util.List;
 
-import org.factoriaf5.powermate.models.Alerts;
+import org.factoriaf5.powermate.models.AlertsModel;
 
 
 
@@ -21,17 +21,17 @@ public AlertsServices(AlertRepository alertRepository) {
 }
 
 
-public interface AlertRepository extends JpaRepository <Alerts, Long> {
-    List<Alerts> findByDeviceId(long deviceId);
-    List<Alerts> findByThresholdGreaterThan(double threshold);
+public interface AlertRepository extends JpaRepository <AlertsModel, Long> {
+    List<AlertsModel> findByDeviceId(long deviceId);
+    List<AlertsModel> findByThresholdGreaterThan(double threshold);
 }
 
-public List<Alerts> findByThresholdGreaterThan(double threshold) {
+public List<AlertsModel> findByThresholdGreaterThan(double threshold) {
     return alertRepository.findByThresholdGreaterThan(threshold);
 }
 
-public Alerts createAlert(Long userId, Long deviceId, double threshold) {
-    Alerts alert = new Alerts();
+public AlertsModel createAlert(Long userId, Long deviceId, double threshold) {
+    AlertsModel alert = new AlertsModel();
     alert.setUserid(userId);
     alert.setDeviceid(deviceId);
     alert.setThreshold(threshold);
@@ -44,8 +44,8 @@ public void deleteAlert(Long alertId) {
 }
 
 public boolean checkAlert(Long deviceId, double currentConsumption) {
-    List<Alerts> alerts = alertRepository.findByDeviceId(deviceId);
-    for (Alerts alert : alerts) {
+    List<AlertsModel> alerts = alertRepository.findByDeviceId(deviceId);
+    for (AlertsModel alert : alerts) {
         if (currentConsumption > alert.getThreshold()) {
             System.out.println("Alera activada para el dispositivo " + deviceId+ " del usuario " + alert.getUserid());
             return true;
@@ -55,8 +55,8 @@ public boolean checkAlert(Long deviceId, double currentConsumption) {
 
 }
 
-public Alerts updateAlert(Long alertId, double threshold) {
-    Alerts alert = alertRepository.findById(alertId).orElseThrow();
+public AlertsModel updateAlert(Long alertId, double threshold) {
+    AlertsModel alert = alertRepository.findById(alertId).orElseThrow();
     alert.setThreshold(threshold);
     return alertRepository.save(alert);
 

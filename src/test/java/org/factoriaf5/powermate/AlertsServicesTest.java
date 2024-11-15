@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.factoriaf5.powermate.models.Alerts;
+import org.factoriaf5.powermate.models.AlertsModel;
 import org.factoriaf5.powermate.services.AlertsServices;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -37,13 +37,13 @@ class AlertsServicesTest {
     @Test
     void testFindByThresholdGreaterThan() {
         double threshold = 50.0;
-        Alerts alert1 = new Alerts();
-        Alerts alert2 = new Alerts();
-        List<Alerts> expectedAlerts = Arrays.asList(alert1, alert2);
+        AlertsModel alert1 = new AlertsModel();
+        AlertsModel alert2 = new AlertsModel();
+        List<AlertsModel> expectedAlerts = Arrays.asList(alert1, alert2);
 
         when(alertRepository.findByThresholdGreaterThan(threshold)).thenReturn(expectedAlerts);
 
-        List<Alerts> result = alertsServices.findByThresholdGreaterThan(threshold);
+        List<AlertsModel> result = alertsServices.findByThresholdGreaterThan(threshold);
 
         assertEquals(expectedAlerts, result);
         verify(alertRepository, times(1)).findByThresholdGreaterThan(threshold);
@@ -54,20 +54,20 @@ class AlertsServicesTest {
         Long userId = 1L;
         Long deviceId = 1L;
         double threshold = 60.0;
-        Alerts alert = new Alerts();
+        AlertsModel alert = new AlertsModel();
         alert.setUserid(userId);
         alert.setDeviceid(deviceId);
         alert.setThreshold(threshold);
 
-        when(alertRepository.save(any(Alerts.class))).thenReturn(alert);
+        when(alertRepository.save(any(AlertsModel.class))).thenReturn(alert);
 
-        Alerts createdAlert = alertsServices.createAlert(userId, deviceId, threshold);
+        AlertsModel createdAlert = alertsServices.createAlert(userId, deviceId, threshold);
 
         assertNotNull(createdAlert);
         assertEquals(userId, createdAlert.getUserid());
         assertEquals(deviceId, createdAlert.getDeviceid());
         assertEquals(threshold, createdAlert.getThreshold());
-        verify(alertRepository, times(1)).save(any(Alerts.class));
+        verify(alertRepository, times(1)).save(any(AlertsModel.class));
     }
 
     @Test
@@ -83,10 +83,10 @@ class AlertsServicesTest {
     void testCheckAlert_Activated() {
         Long deviceId = 1L;
         double currentConsumption = 70.0;
-        Alerts alert = new Alerts();
+        AlertsModel alert = new AlertsModel();
         alert.setThreshold(50.0);
         alert.setUserid(1L);
-        List<Alerts> alerts = Arrays.asList(alert);
+        List<AlertsModel> alerts = Arrays.asList(alert);
 
         when(alertRepository.findByDeviceId(deviceId)).thenReturn(alerts);
 
@@ -100,9 +100,9 @@ class AlertsServicesTest {
     void testCheckAlert_NotActivated() {
         Long deviceId = 1L;
         double currentConsumption = 40.0;
-        Alerts alert = new Alerts();
+        AlertsModel alert = new AlertsModel();
         alert.setThreshold(50.0);
-        List<Alerts> alerts = Arrays.asList(alert);
+        List<AlertsModel> alerts = Arrays.asList(alert);
 
         when(alertRepository.findByDeviceId(deviceId)).thenReturn(alerts);
 
@@ -116,13 +116,13 @@ class AlertsServicesTest {
     void testUpdateAlert() {
         Long alertId = 1L;
         double newThreshold = 80.0;
-        Alerts alert = new Alerts();
+        AlertsModel alert = new AlertsModel();
         alert.setThreshold(50.0);
 
         when(alertRepository.findById(alertId)).thenReturn(Optional.of(alert));
         when(alertRepository.save(alert)).thenReturn(alert);
 
-        Alerts updatedAlert = alertsServices.updateAlert(alertId, newThreshold);
+        AlertsModel updatedAlert = alertsServices.updateAlert(alertId, newThreshold);
 
         assertNotNull(updatedAlert);
         assertEquals(newThreshold, updatedAlert.getThreshold());

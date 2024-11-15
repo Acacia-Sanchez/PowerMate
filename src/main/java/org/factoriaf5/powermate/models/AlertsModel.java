@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "alerts")
-public class Alerts {
+public class AlertsModel {
 
 
 @Id
@@ -18,15 +18,15 @@ private long deviceid;
 @Column(name = "threshold")
 private double threshold;
 
-public Alerts(){
+public AlertsModel(){
 
 }
 
-public Alerts(long id){
+public AlertsModel(long id){
     this.id=id;    
 }
 
-public Alerts(long id, long userid, long deviceid, double threshold){
+public AlertsModel(long id, long userid, long deviceid, double threshold){
     this.id = id;
     this.userid = userid;
     this.deviceid = deviceid;
