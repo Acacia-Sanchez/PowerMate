@@ -2,6 +2,7 @@ package org.factoriaf5.powermate.services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,129 +14,164 @@ import org.factoriaf5.powermate.repositories.ScheduleRepository;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class ScheduleServiceTest {
+class ScheduleServiceTest {
+
+    @Mock
+    private ScheduleRepository scheduleRepository;
+
+    @Mock
+    private DeviceRepository deviceRepository;
 
     @InjectMocks
-    ScheduleService service;
+    private ScheduleService scheduleService;
 
-    @Mock
-    ScheduleRepository scheduleRepository;
+    private Schedule schedule;
+    private Device device;
 
-    @Mock
-    DeviceRepository deviceRepository;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
 
-    @Test
-    void testGetAllSchedules() {
-        List<Schedule> schedules = new ArrayList<>();
-        Schedule schedule1 = new Schedule();
-        schedule1.setId(1L);
-        schedule1.setStartTime(LocalDateTime.now());
-        schedule1.setEndTime(LocalDateTime.now().plusHours(1));
-        schedule1.setDeviceId(1L);
+        //Schedule de ejemplo
+        schedule = new Schedule();
+        schedule.setId(1L);
+        schedule.setDeviceId(1L);
+        schedule.setStartTime(LocalDateTime.now().minusHours(1));
+        schedule.setEndTime(LocalDateTime.now().plusHours(1));
 
-        Schedule schedule2 = new Schedule();
-        schedule2.setId(2L);
-        schedule2.setStartTime(LocalDateTime.now().plusHours(2));
-        schedule2.setEndTime(LocalDateTime.now().plusHours(3));
-        schedule2.setDeviceId(1L);
-
-        schedules.add(schedule1);
-        schedules.add(schedule2);
-
-        when(scheduleRepository.findByDeviceId(1L)).thenReturn(schedules);
-
-        List<Schedule> result = service.getAllSchedules(1L);
-
-        assertThat(result.size(), equalTo(2));
-        assertThat(result, contains(schedule1, schedule2));
+        //Device de ejemplo
+        device = new Device();
+        device.setId(1L);
+        device.setStatus(false);
     }
 
     @Test
     void testChangeStatusOn() {
-        Device device = new Device();
-        device.setId(1L);
+        LocalDateTime startTime = LocalDateTime.now();
         device.setStatus(false);
 
-        LocalDateTime currentTime = LocalDateTime.now();
-        service.changeStatusOn(device, currentTime);
+        scheduleService.changeStatusOn(device, startTime);
 
-        verify(deviceRepository).save(device);
-        assertThat(device.isStatus(), equalTo(true));
+        assertTrue(device.isStatus());
+        verify(deviceRepository, times(1)).save(device);
     }
 
     @Test
     void testChangeStatusOff() {
-        Device device = new Device();
-        device.setId(1L);
+        LocalDateTime endTime = LocalDateTime.now();
         device.setStatus(true);
 
-        LocalDateTime currentTime = LocalDateTime.now();
-        service.changeStatusOff(device, currentTime);
+        scheduleService.changeStatusOff(device, endTime);
 
-        verify(deviceRepository).save(device);
-        assertThat(device.isStatus(), equalTo(false));
+        assertFalse(device.isStatus());
+        verify(deviceRepository, times(1)).save(device);
     }
 
     @Test
-    void testCheckDeviceStatus_ValidStatus() {
-        Device device = new Device();
-        device.setId(1L);
-        device.setStatus(true);
+    void testCreateSchedule() {
+        when(scheduleRepository.save(schedule)).thenReturn(schedule);
 
-        Schedule schedule = new Schedule();
-        schedule.setDeviceId(1L);
-        schedule.setDeviceOn(true);
+        scheduleService.createSchedule(schedule);
 
+        verify(scheduleRepository, times(1)).save(schedule);
+    }
+
+    @Test
+    void testUpdateSchedule() {
+        Schedule updatedSchedule = new Schedule();
+        updatedSchedule.setStartTime(LocalDateTime.now().plusHours(1));
+        updatedSchedule.setEndTime(LocalDateTime.now().plusHours(2));
+
+        when(scheduleRepository.findById(1L)).thenReturn(Optional.of(schedule));
+
+        scheduleService.updateSchedule(1L, updatedSchedule);
+
+        assertEquals(updatedSchedule.getStartTime(), schedule.getStartTime());
+        assertEquals(updatedSchedule.getEndTime(), schedule.getEndTime());
+        verify(scheduleRepository, times(1)).findById(1L);
+        verify(scheduleRepository, times(1)).save(schedule);
+    }
+
+    @Test
+    void testUpdateScheduleNotFound() {
+        Schedule updatedSchedule = new Schedule();
+        updatedSchedule.setStartTime(LocalDateTime.now().plusHours(1));
+
+        when(scheduleRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> scheduleService.updateSchedule(1L, updatedSchedule));
+        verify(scheduleRepository, times(1)).findById(1L);
+        verify(scheduleRepository, never()).save(any(Schedule.class));
+    }
+
+    @Test
+    void testDeleteSchedule() {
+        doNothing().when(scheduleRepository).deleteById(1L);
+
+        scheduleService.deleteSchedule(1L);
+
+        verify(scheduleRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testGetAllSchedules() {
+        List<Schedule> schedules = Arrays.asList(schedule);
+        when(scheduleRepository.findByDeviceId(1L)).thenReturn(schedules);
+
+        List<Schedule> result = scheduleService.getAllSchedules(1L);
+
+        assertEquals(1, result.size());
+        assertEquals(schedule.getDeviceId(), result.get(0).getDeviceId());
+        verify(scheduleRepository, times(1)).findByDeviceId(1L);
+    }
+
+    @Test
+    void testCheckDeviceStatusCorrect() {
         when(deviceRepository.findById(1L)).thenReturn(Optional.of(device));
-        when(scheduleRepository.findByDeviceId(1L)).thenReturn(List.of(schedule));
+        when(scheduleRepository.findByDeviceId(1L)).thenReturn(Arrays.asList(schedule));
 
-        String result = service.checkDeviceStatus(1L);
+        String result = scheduleService.checkDeviceStatus(1L);
 
-        assertThat(result, equalTo("El dispositivo se encuentra encendido/apagado siguiendo lo programado."));
+        assertEquals("El dispositivo se encuentra encendido/apagado siguiendo lo programado.", result);
+        verify(deviceRepository, times(1)).findById(1L);
+        verify(scheduleRepository, times(1)).findByDeviceId(1L);
     }
 
     @Test
-    void testCheckDeviceStatus_ShouldBeOn() {
-        Device device = new Device();
-        device.setId(1L);
+    void testCheckDeviceStatusDeviceShouldBeOn() {
         device.setStatus(false);
-
-        Schedule schedule = new Schedule();
-        schedule.setDeviceId(1L);
         schedule.setDeviceOn(true);
 
         when(deviceRepository.findById(1L)).thenReturn(Optional.of(device));
-        when(scheduleRepository.findByDeviceId(1L)).thenReturn(List.of(schedule));
+        when(scheduleRepository.findByDeviceId(1L)).thenReturn(Arrays.asList(schedule));
 
-        String result = service.checkDeviceStatus(1L);
+        String result = scheduleService.checkDeviceStatus(1L);
 
-        assertThat(result, equalTo("El dispositivo debería estar encendido."));
+        assertEquals("El dispositivo debería estar encendido.", result);
     }
 
     @Test
-    void testCheckDeviceStatus_ShouldBeOff() {
-    Device device = new Device();
-    device.setId(1L);
-    device.setStatus(true);
+    void testCheckDeviceStatusDeviceShouldBeOff() {
+        device.setStatus(true);
+        schedule.setDeviceOn(false);
 
-    Schedule schedule = new Schedule();
-    schedule.setDeviceId(1L);
-    schedule.setDeviceOn(false);
+        when(deviceRepository.findById(1L)).thenReturn(Optional.of(device));
+        when(scheduleRepository.findByDeviceId(1L)).thenReturn(Arrays.asList(schedule));
 
-    when(deviceRepository.findById(1L)).thenReturn(Optional.of(device));
-    when(scheduleRepository.findByDeviceId(1L)).thenReturn(List.of(schedule));
+        String result = scheduleService.checkDeviceStatus(1L);
 
-    String result = service.checkDeviceStatus(1L);
-
-    assertThat(result, equalTo("El dispositivo debería estar apagado."));
-}
+        assertEquals("El dispositivo debería estar apagado.", result);
+    }
 }
