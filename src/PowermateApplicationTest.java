@@ -1,10 +1,10 @@
-package org.factoriaf5.powermate;
+package org.factoriaf5.powermate.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PowermateApplicationTests {
+class PowermateApplicationTest {
 
 	@Test
 	void contextLoads() {
