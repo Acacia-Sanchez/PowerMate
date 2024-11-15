@@ -1,88 +1,75 @@
 package org.factoriaf5.powermate.models;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-public class ScheduleTest {
+class ScheduleTest {
+
+    @Mock
+    private Device mockDevice;  // Creamos un mock de la clase Device
 
     private Schedule schedule;
-    private Device device;
 
     @BeforeEach
-    public void setUp() {
-        // Crear instancia de Device (puedes simularlo si es necesario)
-        device = Mockito.mock(Device.class);  // Usamos Mockito para simular el objeto Device
-        
-        // Crear instancia de Schedule y asociarle el dispositivo simulado
-        schedule = new Schedule();
-        schedule.setDevice(device);  // Asocia el objeto Device a Schedule
+    void setUp() {
+        // Inicializamos los mocks
+        MockitoAnnotations.openMocks(this);
+
+        // Creamos un Schedule con un mock de Device y un rango de tiempo
+        LocalDateTime startTime = LocalDateTime.of(2024, 11, 15, 8, 0);  // 15 de noviembre de 2024, 08:00 AM
+        LocalDateTime endTime = LocalDateTime.of(2024, 11, 15, 18, 0);    // 15 de noviembre de 2024, 06:00 PM
+        schedule = new Schedule(mockDevice, startTime, endTime);
     }
 
     @Test
-    public void testGettersAndSetters() {
-        // Probar que los getters y setters funcionan correctamente
-        
-        LocalDateTime startTime = LocalDateTime.of(2024, 11, 14, 8, 0);
-        LocalDateTime endTime = LocalDateTime.of(2024, 11, 14, 17, 0);
-
-        schedule.setStartTime(startTime);
-        schedule.setEndTime(endTime);
-
-        // Verificar que los valores se guardan y recuperan correctamente
-        assertEquals(startTime, schedule.getStartTime());
-        assertEquals(endTime, schedule.getEndTime());
+    void testConstructor() {
+        // Verificamos que los atributos hayan sido correctamente asignados
+        assertNotNull(schedule.getDevice());
+        assertEquals(LocalDateTime.of(2024, 11, 15, 8, 0), schedule.getStartTime());
+        assertEquals(LocalDateTime.of(2024, 11, 15, 18, 0), schedule.getEndTime());
     }
 
     @Test
-    public void testIsDeviceOn_True() {
-        // Probar que isDeviceOn() devuelve true cuando la hora actual está dentro del rango
+    void testIsDeviceOn_ShouldReturnTrue_WhenCurrentTimeIsWithinRange() {
+        // Simulamos que la hora actual esté dentro del rango
+        LocalDateTime currentTime = LocalDateTime.of(2024, 11, 15, 12, 0); // 12:00 PM
 
-        LocalDateTime startTime = LocalDateTime.of(2024, 11, 14, 8, 0);
-        LocalDateTime endTime = LocalDateTime.of(2024, 11, 14, 17, 0);
+        // Establecemos que el método LocalDateTime.now() devuelva nuestra fecha simulada
+        try (var mock = mockStatic(LocalDateTime.class)) {
+            mock.when(LocalDateTime::now).thenReturn(currentTime);
 
-        schedule.setStartTime(startTime);
-        schedule.setEndTime(endTime);
-
-        // Establecer la hora actual dentro del rango
-        LocalDateTime now = LocalDateTime.of(2024, 11, 14, 12, 0);  // Hora dentro del rango
-        LocalDateTime nowMock = Mockito.mock(LocalDateTime.class);
-        Mockito.when(nowMock.now()).thenReturn(now);  // Simular la hora actual
-
-        assertTrue(schedule.isDeviceOn());
+            assertTrue(schedule.isDeviceOn(), "El dispositivo debería estar encendido dentro del rango de tiempo.");
+        }
     }
 
     @Test
-    public void testIsDeviceOn_False_BeforeStartTime() {
-        // Probar que isDeviceOn() devuelve false cuando la hora actual es antes de la hora de inicio
+    void testIsDeviceOn_ShouldReturnFalse_WhenCurrentTimeIsBeforeStartTime() {
+        // Simulamos que la hora actual sea antes del tiempo de inicio
+        LocalDateTime currentTime = LocalDateTime.of(2024, 11, 15, 7, 30); // 07:30 AM
 
-        LocalDateTime startTime = LocalDateTime.of(2024, 11, 14, 8, 0);
-        LocalDateTime endTime = LocalDateTime.of(2024, 11, 14, 17, 0);
+        try (var mock = mockStatic(LocalDateTime.class)) {
+            mock.when(LocalDateTime::now).thenReturn(currentTime);
 
-        schedule.setStartTime(startTime);
-        schedule.setEndTime(endTime);
-
-        // Establecer la hora actual antes del inicio
-        LocalDateTime now = LocalDateTime.of(2024, 11, 14, 7, 0);  // Hora antes del rango
-        assertFalse(schedule.isDeviceOn());
+            assertFalse(schedule.isDeviceOn(), "El dispositivo debería estar apagado antes del tiempo de inicio.");
+        }
     }
 
     @Test
-    public void testIsDeviceOn_False_AfterEndTime() {
-        // Probar que isDeviceOn() devuelve false cuando la hora actual es después de la hora de fin
+    void testIsDeviceOn_ShouldReturnFalse_WhenCurrentTimeIsAfterEndTime() {
+        // Simulamos que la hora actual esté después del tiempo de finalización
+        LocalDateTime currentTime = LocalDateTime.of(2024, 11, 15, 18, 30); // 06:30 PM
 
-        LocalDateTime startTime = LocalDateTime.of(2024, 11, 14, 8, 0);
-        LocalDateTime endTime = LocalDateTime.of(2024, 11, 14, 17, 0);
+        try (var mock = mockStatic(LocalDateTime.class)) {
+            mock.when(LocalDateTime::now).thenReturn(currentTime);
 
-        schedule.setStartTime(startTime);
-        schedule.setEndTime(endTime);
-
-        // Establecer la hora actual después del final
-        LocalDateTime now = LocalDateTime.of(2024, 11, 14, 18, 0);  // Hora después del rango
-        assertFalse(schedule.isDeviceOn());
+            assertFalse(schedule.isDeviceOn(), "El dispositivo debería estar apagado después del tiempo de finalización.");
+        }
     }
 }
