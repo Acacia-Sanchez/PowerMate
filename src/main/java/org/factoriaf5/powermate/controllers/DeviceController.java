@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.services.DeviceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,11 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api")
 public class DeviceController {
 
+    @Autowired
     DeviceService service;
 
     @PostMapping(path = "/admin/devices")
-    public ResponseEntity<Device> addDevice(@RequestBody Device deviceId) {
-        return new ResponseEntity<>(service.createDevice(deviceId), HttpStatus.CREATED);
+    public ResponseEntity<Device> addDevice(@RequestBody Device device) {
+        return new ResponseEntity<>(service.createDevice(device), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/devices")
