@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService{
     public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id).map(user -> {
             user.setUsername(userDetails.getUsername());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
             user.setRole(userDetails.getRole());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
