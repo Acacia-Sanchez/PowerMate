@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,16 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSchedule);
     }
     
+    @PutMapping
+    public ResponseEntity<Schedule> updateSchedule(
+            @RequestParam Long scheduleId,
+            @RequestParam LocalDateTime startTime,
+            @RequestParam LocalDateTime endTime) {
+        Schedule schedule = new Schedule(scheduleId, startTime, endTime);
+        Schedule updatedSchedule = scheduleService.updateSchedule(scheduleId, schedule);
+        return ResponseEntity.ok(updatedSchedule);
+    }
 
 
+    
 }
