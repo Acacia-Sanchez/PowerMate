@@ -19,7 +19,7 @@
 * DEVELOPER: Adrian Caiñas [Github](https://github.com/acr00)
 * DEVELOPER: Andrea Martinez [Github](https://github.com/andreamsgi27)
 * DEVELOPER: Óscar Menéndez [Github](https://github.com/Morty1904)
-* DEVELOPER: Mercy Sancayauri [Github](https://github.com/mercyluz)
+* DEVELOPER: Mercy Chancayauri [Github](https://github.com/mercyluz)
 * DEVELOPER: Alejandra Sierra [Github](https://github.com/alejandra-sierra)
 * DEVELOPER: Estefany Ochoa [Github](https://github.com/EstefanyOchoaRomero)
 * DEVELOPER: Kevin Boy [Github](https://github.com/sealkboy)
