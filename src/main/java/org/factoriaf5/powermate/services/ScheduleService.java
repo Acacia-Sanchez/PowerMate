@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 //import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.factoriaf5.powermate.models.Schedule;
+import org.factoriaf5.powermate.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

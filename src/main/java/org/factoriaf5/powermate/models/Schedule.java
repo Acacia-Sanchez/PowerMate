@@ -18,7 +18,7 @@ public class Schedule {
     private LocalDateTime endTime;    // Hora de apagado
 
     public Schedule() {
-    } 
+    }
     public Schedule(Device device, LocalDateTime startTime, LocalDateTime endTime) { this.device = device; this.startTime = startTime; this.endTime = endTime; }
     
     // Getters y setters
