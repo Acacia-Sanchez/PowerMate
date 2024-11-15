@@ -3,8 +3,7 @@ package org.factoriaf5.powermate.services;
 import java.util.List;
 
 import org.factoriaf5.powermate.models.Alerts;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
+
 
 
 
@@ -20,6 +19,7 @@ private final AlertRepository alertRepository;
 public AlertsServices(AlertRepository alertRepository) {
     this.alertRepository = alertRepository;
 }
+
 
 public interface AlertRepository extends JpaRepository <Alerts, Long> {
     List<Alerts> findByDeviceId(long deviceId);
