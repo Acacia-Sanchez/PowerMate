@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.factoriaf5.powermate.models.Schedule;
+import org.factoriaf5.powermate.services.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/schedule/device{id}")
+@RequestMapping("/api/schedule/device/{id}")
 public class ScheduleController {
-    private final Schedule scheduleService;
-    public ScheduleController (Schedule scheduleService) {
+    private final ScheduleService scheduleService;
+    private final DeviceRepository deviceRepository;
+
+    public ScheduleController(ScheduleService scheduleService, DeviceRepository deviceRepository) {
         this.scheduleService = scheduleService;
+        this.deviceRepository = deviceRepository;
     }
 
     @PostMapping
@@ -28,9 +32,11 @@ public class ScheduleController {
             @RequestParam Long deviceId,
             @RequestParam LocalDateTime startTime,
             @RequestParam LocalDateTime endTime) {
-        Schedule schedule = new Schedule(deviceId, startTime, endTime);
-        Schedule createdSchedule = scheduleService.createSchedule(schedule);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSchedule);
+        Device device = deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new RuntimeException("Dispositivo no encontrado"));
+        Schedule schedule = new Schedule(device, startTime, endTime);
+        scheduleService.createSchedule(schedule);
+        return ResponseEntity.status(HttpStatus.CREATED).body(schedule);
     }
     
     @PutMapping
@@ -38,9 +44,12 @@ public class ScheduleController {
             @RequestParam Long scheduleId,
             @RequestParam LocalDateTime startTime,
             @RequestParam LocalDateTime endTime) {
-        Schedule schedule = new Schedule(scheduleId, startTime, endTime);
-        Schedule updatedSchedule = scheduleService.updateSchedule(scheduleId, schedule);
-        return ResponseEntity.ok(updatedSchedule);
+        Schedule schedule = new Schedule();
+        schedule.setId(scheduleId);
+        schedule.setStartTime(startTime);
+        schedule.setEndTime(endTime);
+        scheduleService.updateSchedule(scheduleId, schedule);
+        return ResponseEntity.ok(schedule);
     }
 
     @DeleteMapping
@@ -55,7 +64,7 @@ public class ScheduleController {
         return ResponseEntity.ok(schedules);
     }
 
-    @GetMapping("/check-status")
+    @GetMapping("/{deviceId}/check-status") 
     public ResponseEntity<String> checkDeviceStatus(@PathVariable Long deviceId) {
         String statusMessage = scheduleService.checkDeviceStatus(deviceId);
         return ResponseEntity.ok(statusMessage);
