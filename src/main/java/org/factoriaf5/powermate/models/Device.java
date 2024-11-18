@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,10 +17,9 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private Long userId;
+    private User user;
 
     @Column(name = "device_name", nullable = false)
     private String name;
@@ -31,9 +30,9 @@ public class Device {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    public Device(Long id, Long userId, String name, Boolean status, int power) {
+    public Device(Long id, User user, String name, Boolean status, int power) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.name = name;
         this.status = status;
         this.power = power;
@@ -51,12 +50,12 @@ public class Device {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
