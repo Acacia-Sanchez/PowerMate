@@ -26,7 +26,7 @@ public class ConsRecordController {
 
     @PostMapping("/{deviceId}")
     public ResponseEntity<ConsRecord> recordConsumption(@PathVariable Long deviceId) {
-        Device device = findDeviceById(deviceId); // Debe ser implementado según tu lógica
+        Device device = findDeviceById(deviceId);
         if (device == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
