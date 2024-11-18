@@ -17,9 +17,9 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @Column(name = "device_name", nullable = false)
     private String name;
@@ -30,9 +30,9 @@ public class Device {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    public Device(Long id, User userId, String name, Boolean status, int power) {
+    public Device(Long id, User user, String name, Boolean status, int power) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.name = name;
         this.status = status;
         this.power = power;
@@ -50,12 +50,12 @@ public class Device {
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
