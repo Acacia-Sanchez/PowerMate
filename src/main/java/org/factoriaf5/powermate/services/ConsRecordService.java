@@ -1,8 +1,8 @@
-package main.java.org.factoriaf5.powermate.services;
+package org.factoriaf5.powermate.services;
 
 import java.time.LocalTime;
 
-import org.factoriaf5.PowerMate.powermate.repositories.ConsRecordRepository;
+import org.factoriaf5.powermate.repositories.ConsRecordRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +25,7 @@ public class ConsRecordService {
     public Device(Device device) {   // instancio device para traerme sus datos
         this.device = device;
     }
-    // según la IA no es necesario instanciar device, las 5 líneas anteriores sobran.... 
+    // según la IA no es necesario instanciar device, las 5 líneas anteriores sobran....
 */
 
     // calculo el consumo total cada 24h, por id
@@ -50,7 +50,7 @@ public class ConsRecordService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }     
+        }
 
         // Calcula la duración total si el WHILE termina mientras el atributo está en true
         if (device.isStatus() && timeOn != 0) {
