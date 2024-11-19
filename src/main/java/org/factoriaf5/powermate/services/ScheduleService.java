@@ -1,11 +1,11 @@
 package org.factoriaf5.powermate.services;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-//import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.models.Schedule;
+import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.factoriaf5.powermate.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
