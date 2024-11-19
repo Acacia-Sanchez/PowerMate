@@ -1,4 +1,4 @@
-package org.factoriaf5.powermate;
+package org.factoriaf5.powermate.controllers;
 
 import java.util.Arrays;
 import java.util.List;
