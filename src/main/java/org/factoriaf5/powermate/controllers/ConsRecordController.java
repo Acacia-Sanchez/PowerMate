@@ -26,7 +26,7 @@ public class ConsRecordController {
 
     @PostMapping("/{deviceId}")
     public ResponseEntity<ConsRecord> recordConsumption(@PathVariable Long deviceId) {
-        Device device = findDeviceById(deviceId);
+        Device device = consRecordService.findDeviceById(deviceId); // hice cambios acá
         if (device == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -38,8 +38,9 @@ public class ConsRecordController {
         return ResponseEntity.status(HttpStatus.CREATED).body(consRecord);
     }
 
-    // Método auxiliar para obtener el dispositivo (falta añadir según la lógica de device)
+    /* // Método auxiliar para obtener el dispositivo (falta añadir según la lógica de device)
+    La I.A me recomendó quitar este metodo para que el test funcione correctamente
     private Device findDeviceById(Long deviceId) {
         return null;
-    }
+    } */
 }
