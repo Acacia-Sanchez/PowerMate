@@ -1,10 +1,31 @@
 package org.factoriaf5.powermate.models;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class DeviceTest {
+
+    @Test
+    void testDeviceConstructor() {
+        User user = User.builder()
+                        .id(1L)
+                        .username("user1")
+                        .password("password1")
+                        .role("admin")
+                        .build();
+        Long id = 1L;
+        String name = "device1";
+        boolean status = true;
+        int power = 100;
+        Device device = new Device(id, user, name, status, power);
+
+        assertEquals(id, device.getId());
+        assertEquals(user, device.getUser());
+        assertEquals(name, device.getName());
+        assertEquals(status, device.isStatus());
+        assertEquals(power, device.getPower());
+        
+    }
 
     @Test
     void testDeviceId() {
@@ -14,15 +35,18 @@ public class DeviceTest {
         assertEquals(1L, device.getId());
     }
 
-    // @Test
-    // void testDeviceGetUserId() {
-    //     User user = new User(1L, "Prueba", "1234", "admin");
-    //     Device device = new Device();
-
-    //     device.setUserId(user.getId());
-
-    //     assertEquals(device.getUserId(), user.getId());
-    // }
+    @Test
+    void testDeviceGetSetUser() {
+        User user = User.builder()
+                        .id(1L)
+                        .username("user1")
+                        .password("password1")
+                        .role("admin")
+                        .build();
+        Device device = new Device();
+        device.setUser(user);
+        assertEquals(user, device.getUser());
+    }
 
     @Test
     void testDeviceName() {
