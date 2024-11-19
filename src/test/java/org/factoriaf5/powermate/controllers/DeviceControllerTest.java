@@ -2,23 +2,19 @@ package org.factoriaf5.powermate.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.factoriaf5.powermate.dtos.DeviceDTO;
 import org.factoriaf5.powermate.services.DeviceService;
-import org.factoriaf5.powermate.models.Device;
-import org.factoriaf5.powermate.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
-import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
 public class DeviceControllerTest {
     private MockMvc mockMvc;
     @Mock
