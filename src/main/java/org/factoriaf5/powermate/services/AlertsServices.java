@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AlertsServices {
-// @Autowired
 
 
 private final AlertRepository alertRepository;
@@ -45,19 +44,26 @@ public void deleteAlert(Long alertId) {
     alertRepository.deleteById(alertId);
 }
 
-public boolean checkAlert(Long deviceId, double currentConsumption) {
-    List<AlertsModel> alerts = alertRepository.findByDeviceId(deviceId);
-    for (AlertsModel alert : alerts) {
-        if (currentConsumption > alert.getThreshold()) {
-            System.out.println("Alera activada para el dispositivo " + deviceId+ " del usuario " + alert.getUserid());
-            return true;
-        }
-    }
-    return false;
-
+public AlertsModel findById(Long alertId) {
+    return alertRepository.findById(alertId).orElse(null);
 }
 
-public AlertsModel updateAlert(Long alertId, double threshold) {
+public boolean checkAlert(Long deviceId, double currentConsumption) {
+    List<AlertsModel> alerts =findByDeviceId(deviceId);
+        for (AlertsModel alert : alerts) {
+            if (currentConsumption > alert.getThreshold()) {
+                System.out.println("Alera activada para el dispositivo " + deviceId + " del usuario " + alert.getUserid());
+                return true;
+            }
+        }
+        return false;
+    
+    }  
+    private List<AlertsModel> findByDeviceId(Long deviceId) {
+        throw new UnsupportedOperationException("Unimplemented method 'findByDeviceId'");
+    }
+    
+    public AlertsModel updateAlert(Long alertId, double threshold) {
     AlertsModel alert = alertRepository.findById(alertId).orElseThrow();
     alert.setThreshold(threshold);
     return alertRepository.save(alert);
