@@ -8,6 +8,7 @@ public class DeviceDTO {
     private String name;
     private int power;
     private boolean status;
+    
 
     public DeviceDTO(Device device){
         this.id=device.getId();
