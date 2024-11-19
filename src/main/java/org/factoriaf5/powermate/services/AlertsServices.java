@@ -48,8 +48,12 @@ public AlertsModel findById(Long alertId) {
     return alertRepository.findById(alertId).orElse(null);
 }
 
+/* 
+
+EN REVISION DE CODIGO
+
 public boolean checkAlert(Long deviceId, double currentConsumption) {
-    List<AlertsModel> alerts =findByDeviceId(deviceId);
+    AlertsModel alerts =findById(deviceId);
         for (AlertsModel alert : alerts) {
             if (currentConsumption > alert.getThreshold()) {
                 System.out.println("Alera activada para el dispositivo " + deviceId + " del usuario " + alert.getUserid());
@@ -59,9 +63,13 @@ public boolean checkAlert(Long deviceId, double currentConsumption) {
         return false;
     
     }  
+
     private List<AlertsModel> findByDeviceId(Long deviceId) {
         throw new UnsupportedOperationException("Unimplemented method 'findByDeviceId'");
     }
+
+    */
+
     
     public AlertsModel updateAlert(Long alertId, double threshold) {
     AlertsModel alert = alertRepository.findById(alertId).orElseThrow();
