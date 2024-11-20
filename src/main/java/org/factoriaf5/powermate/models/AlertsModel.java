@@ -25,7 +25,7 @@ public AlertsModel(long id){
     this.id=id;
 }
 
-public AlertsModel(long id, long userid, Device deviceid, double threshold){
+public AlertsModel(long id, Device deviceid, double threshold){
     this.id = id;
     this.deviceid = deviceid;
     this.threshold = threshold;
