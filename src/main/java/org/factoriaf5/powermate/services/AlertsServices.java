@@ -23,7 +23,7 @@ public class AlertsServices {
     }
 
     public List<AlertsModel> findByThresholdGreaterThan(double threshold) {
-        return alertRepository.findByThresholdGreaterThan(threshold);
+        return alertRepository.findAll().stream().filter(x -> x.getThreshold()>threshold).toList();
     }
 
     public AlertsModel createAlert(Device deviceId, double threshold) {

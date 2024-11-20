@@ -55,8 +55,8 @@ public void changeStatusOff(Device device, LocalDateTime endTime) {
         scheduleRepository.deleteById(id);
         }
     
-    public List<Schedule> getAllSchedules(Long deviceId) {
-        return scheduleRepository.findByDeviceId(deviceId);
+    public List<Schedule> getAllSchedulesByDeviceId(Long deviceId) {
+        return scheduleRepository.findAll().stream().filter(x -> x.getDevice().getId().equals(deviceId)).toList();
     }
         
 
@@ -64,7 +64,7 @@ public void changeStatusOff(Device device, LocalDateTime endTime) {
         Device device = deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new RuntimeException("No se encontró el dispositivo"));
     
-        List<Schedule> schedules = scheduleRepository.findByDeviceId(deviceId);
+        List<Schedule> schedules = getAllSchedulesByDeviceId(deviceId);
     
         for (Schedule schedule : schedules) {
             if (schedule.isDeviceOn()) {
