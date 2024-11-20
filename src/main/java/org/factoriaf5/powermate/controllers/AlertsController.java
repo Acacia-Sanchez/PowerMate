@@ -29,38 +29,27 @@ public class Alerts {
     public Alerts(AlertsServices alertsService) {
         this.alertsService = alertsService;
     }
+
     @PostMapping("createAlert")
     public void createAlert() {
-        alertsService.createAlert(null, null, 0);
+        alertsService.createAlert( null, 0);
     }
+
     @PutMapping("updateAlert")
-public void updateAlert(@RequestParam("id") long id, @RequestBody AlertsModel updatedAlert) {
-    alertsService.updateAlert(id, updatedAlert.getThreshold());
-}
+    public void updateAlert(@RequestParam("id") long id, @RequestBody AlertsModel updatedAlert) {
+        alertsService.updateAlert(id, updatedAlert.getThreshold());
+    }
+
     @DeleteMapping("deleteAlert")
     public void deleteAlert(@RequestParam("id") long id) {
         alertsService.deleteAlert(id);
     }
 
-    /* 
-
-
-    EN REVISION 
-
-
-    @GetMapping("checkAlert")
+    /* @GetMapping("checkAlert")
     public boolean checkAlert(@RequestParam("id") long id) {
         return alertsService.checkAlert(id, id);
+    } */
 
-    @GetMapping("FindByDeviceId")
-    public List<AlertsModel> findByDeviceId(@RequestParam("deviceId") long deviceId) {
-        return alertsService.findByDeviceId(deviceId);
-    }
-    
-        
-}
-        */
-    
     // Other methods for handling alerts
 
     @GetMapping("FindByThresholdGreaterThan")
