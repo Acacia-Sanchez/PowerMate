@@ -62,7 +62,7 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<List<Schedule>> getAllSchedules(@RequestParam Long deviceId) {
-        List<Schedule> schedules = scheduleService.getAllSchedules(deviceId);
+        List<Schedule> schedules = scheduleService.getAllSchedulesByDeviceId(deviceId);
         return ResponseEntity.ok(schedules);
     }
 
