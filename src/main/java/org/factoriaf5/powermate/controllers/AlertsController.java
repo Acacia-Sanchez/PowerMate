@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 //Controller for handling alerts
 
 @RestController
-@RequestMapping("/alerts")
+@RequestMapping("/api/alerts")
 
 public class AlertsController {
 
@@ -30,29 +30,29 @@ public class Alerts {
         this.alertsService = alertsService;
     }
 
-    @PostMapping("createAlert")
+    @PostMapping("/createAlert")
     public void createAlert() {
         alertsService.createAlert( null, 0);
     }
 
-    @PutMapping("updateAlert")
+    @PutMapping("/updateAlert")
     public void updateAlert(@RequestParam("id") long id, @RequestBody AlertsModel updatedAlert) {
         alertsService.updateAlert(id, updatedAlert.getThreshold());
     }
 
-    @DeleteMapping("deleteAlert")
+    @DeleteMapping("/deleteAlert")
     public void deleteAlert(@RequestParam("id") long id) {
         alertsService.deleteAlert(id);
     }
 
-    /* @GetMapping("checkAlert")
+    /* @GetMapping("/checkAlert")
     public boolean checkAlert(@RequestParam("id") long id) {
         return alertsService.checkAlert(id, id);
     } */
 
     // Other methods for handling alerts
 
-    @GetMapping("FindByThresholdGreaterThan")
+    @GetMapping("/FindByThresholdGreaterThan")
     public List<AlertsModel> findByThresholdGreaterThan(@RequestParam("threshold") double threshold) {
         return alertsService.findByThresholdGreaterThan(threshold);
     }
