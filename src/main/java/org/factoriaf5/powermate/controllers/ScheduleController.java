@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/schedule/device/{id}")
+@RequestMapping("/api/schedule/{device_id}")
 public class ScheduleController {
     private final ScheduleService scheduleService;
     private final DeviceRepository deviceRepository;
@@ -66,7 +66,7 @@ public class ScheduleController {
         return ResponseEntity.ok(schedules);
     }
 
-    @GetMapping("/{deviceId}/check-status") 
+    @GetMapping("/check-status") 
     public ResponseEntity<String> checkDeviceStatus(@PathVariable Long deviceId) {
         String statusMessage = scheduleService.checkDeviceStatus(deviceId);
         return ResponseEntity.ok(statusMessage);
