@@ -25,7 +25,7 @@ class ScheduleTest {
         // Creamos un Schedule con un mock de Device y un rango de tiempo
         LocalDateTime startTime = LocalDateTime.of(2024, 11, 15, 8, 0);  // 15 de noviembre de 2024, 08:00 AM
         LocalDateTime endTime = LocalDateTime.of(2024, 11, 15, 18, 0);    // 15 de noviembre de 2024, 06:00 PM
-        schedule = new Schedule(mockDevice, startTime, endTime);
+        schedule = new Schedule(null, mockDevice, startTime, endTime);
     }
 
     @Test
