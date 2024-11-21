@@ -12,8 +12,8 @@ public class AlertsModel {
 @Column(name = "id")
 private Long id;
 @OneToOne
-@JoinColumn(name = "device_id")
-private Device deviceid;
+@JoinColumn(name = "device")
+private Device device;
 @Column(name = "threshold")
 private double threshold;
 
@@ -25,17 +25,17 @@ public AlertsModel(long id){
     this.id=id;
 }
 
-public AlertsModel(long id, long userid, Device deviceid, double threshold){
+public AlertsModel(long id, long userid, Device device, double threshold){
     this.id = id;
-    this.deviceid = deviceid;
+    this.device = device;
     this.threshold = threshold;
 }
 
 public Long getId() {
     return id;
 }
-public Device getDeviceid() {
-    return deviceid;
+public Device getDevice() {
+    return device;
 }
 public double getThreshold() {
     return threshold;
@@ -43,8 +43,8 @@ public double getThreshold() {
 public void setId(Long id) {
     this.id = id;
 }
-public void setDeviceid(Device deviceid) {
-    this.deviceid = deviceid;
+public void setDevice(Device device) {
+    this.device = device;
 }
 public void setThreshold(double threshold) {
     this.threshold = threshold;

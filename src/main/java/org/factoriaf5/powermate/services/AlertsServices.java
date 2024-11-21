@@ -26,9 +26,9 @@ public class AlertsServices {
         return alertRepository.findByThresholdGreaterThan(threshold);
     }
 
-    public AlertsModel createAlert(Device deviceId, double threshold) {
+    public AlertsModel createAlert(Device device, double threshold) {
         AlertsModel alert = new AlertsModel();
-        alert.setDeviceid(deviceId);
+        alert.setDevice(device);
         alert.setThreshold(threshold);
         return alertRepository.save(alert);
     }
@@ -42,10 +42,10 @@ public class AlertsServices {
         return alertRepository.findById(alertId).orElse(null);
     }
 
-    /* public boolean checkAlert(Long deviceId, double currentConsumption) {
+    /* public boolean checkAlert(Long device, double currentConsumption) {
         for (AlertsModel alert : alerts) {
             if (currentConsumption > alert.getThreshold()) {
-                System.out.println("Alera activada para el dispositivo " + deviceId + " del usuario " + alert.getUserid());
+                System.out.println("Alera activada para el dispositivo " + device + " del usuario " + alert.getUserid());
                 return true;
             }
         }
