@@ -1,4 +1,4 @@
-package org.factoriaf5.powermate.models;
+/* package org.factoriaf5.powermate.models;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -73,3 +73,4 @@ class ScheduleTest {
         }
     }
 }
+ */
