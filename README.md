@@ -134,4 +134,20 @@ El proyecto consiste en crear un backend que permita a los usuarios:
         * /api/consumption: Consumo en tiempo real.
         * /api/alerts: Gestión de alertas.
         * /api/schedule: Programación de dispositivos
+### Colaboradores:
+- [Alejandra Sierra](https://github.com/alejandra-sierra)  
+- [Guadalupe Figueroa](https://github.com/GuadalupeGFigueroa)  
+- [Lara Gutiérrez](https://github.com/lara-gs)  
+- [Maria Straw](https://github.com/strawmery)  
+- [Pilar Pato](https://github.com/Pilar-Pato)  
+- [Naudelyn Lucena](https://github.com/NaudelynLucena)  
+- [Roberto Lumbreras](https://github.com/roberto-lumbreras)  
+- [Ana Hernández](https://github.com/AnaBHernandez)  
+- [Acacia Sánchez](https://github.com/acr00)  
+- [Estefany Ochoa](https://github.com/EstefanyOchoaRomero)  
+- [Andrea García](https://github.com/andreamsgi27)  
+- [Susana Artime](https://github.com/Susana-Artime)  
+- [Andrés Vázquez](https://github.com/andresvaz89)  
+
+
  
