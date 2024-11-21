@@ -12,7 +12,7 @@ public class AlertsModel {
 @Column(name = "id")
 private Long id;
 @OneToOne
-@JoinColumn(name = "device")
+@JoinColumn(name = "Device")
 private Device device;
 @Column(name = "threshold")
 private double threshold;
@@ -25,7 +25,7 @@ public AlertsModel(long id){
     this.id=id;
 }
 
-public AlertsModel(long id, long userid, Device device, double threshold){
+public AlertsModel(long id, Device device, double threshold){
     this.id = id;
     this.device = device;
     this.threshold = threshold;
