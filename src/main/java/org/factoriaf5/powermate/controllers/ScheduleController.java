@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/schedule/{device_id}")
+@RequestMapping("/api/schedule")
 public class ScheduleController {
     private final ScheduleService scheduleService;
     private final DeviceRepository deviceRepository;
@@ -31,9 +31,9 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<Schedule> createSchedule(
-            @RequestParam Long deviceId,
-            @RequestParam LocalDateTime startTime,
-            @RequestParam LocalDateTime endTime) {
+            @RequestBody Long deviceId,
+            @RequestBody LocalDateTime startTime,
+            @RequestBody LocalDateTime endTime) {
         Device device = deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new RuntimeException("Dispositivo no encontrado"));
         Schedule schedule = new Schedule(device, startTime, endTime);
@@ -41,11 +41,11 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(schedule);
     }
     
-    @PutMapping
+    @PutMapping ("/{scheduleId}")
     public ResponseEntity<Schedule> updateSchedule(
-            @RequestParam Long scheduleId,
-            @RequestParam LocalDateTime startTime,
-            @RequestParam LocalDateTime endTime) {
+            @PathVariable Long scheduleId,
+            @RequestBody LocalDateTime startTime,
+            @RequestBody LocalDateTime endTime) {
         Schedule schedule = new Schedule();
         schedule.setId(scheduleId);
         schedule.setStartTime(startTime);
@@ -54,19 +54,20 @@ public class ScheduleController {
         return ResponseEntity.ok(schedule);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteSchedule(@RequestParam Long scheduleId) {
+    @DeleteMapping ("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId) {
         scheduleService.deleteSchedule(scheduleId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Schedule>> getAllSchedules(@RequestParam Long deviceId) {
+    //Este método es para que te salgan todos los horarios programados de un dispositivo
+    @GetMapping ("/{deviceId}")
+    public ResponseEntity<List<Schedule>> getAllSchedules(@PathVariable Long deviceId) {
         List<Schedule> schedules = scheduleService.getAllSchedulesByDeviceId(deviceId);
         return ResponseEntity.ok(schedules);
     }
 
-    @GetMapping("/check-status") 
+    @GetMapping("/check-status/{deviceId}")
     public ResponseEntity<String> checkDeviceStatus(@PathVariable Long deviceId) {
         String statusMessage = scheduleService.checkDeviceStatus(deviceId);
         return ResponseEntity.ok(statusMessage);
