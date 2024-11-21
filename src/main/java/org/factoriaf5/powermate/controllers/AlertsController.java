@@ -2,13 +2,14 @@ package org.factoriaf5.powermate.controllers;
 
 import java.util.List;
 
+import org.factoriaf5.powermate.dtos.AlertsDTO;
 import org.factoriaf5.powermate.models.AlertsModel;
-
-//Import necessary classes
-
 import org.factoriaf5.powermate.services.AlertsServices;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,46 +17,67 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-//Controller for handling alerts
-
 @RestController
 @RequestMapping("/api/alerts")
-
 public class AlertsController {
 
-public class Alerts {
+    private final AlertsServices alertsServices;
 
-    private AlertsServices alertsService;
-    public Alerts(AlertsServices alertsService) {
-        this.alertsService = alertsService;
+    public AlertsController(AlertsServices alertsServices) {
+        this.alertsServices = alertsServices;
     }
 
-    @PostMapping("/createAlert")
-    public void createAlert() {
-        alertsService.createAlert( null, 0);
+    // Crear una nueva alerta
+    @PostMapping("/create")
+    public ResponseEntity<AlertsModel> createAlert(@RequestBody AlertsDTO alertDTO) {
+        AlertsModel createdAlert = alertsServices.createAlert(alertDTO);
+        return new ResponseEntity<>(createdAlert, HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateAlert")
-    public void updateAlert(@RequestParam("id") long id, @RequestBody AlertsModel updatedAlert) {
-        alertsService.updateAlert(id, updatedAlert.getThreshold());
+    // Obtener alertas por umbral
+    @GetMapping("/threshold")
+    public ResponseEntity<List<AlertsModel>> getAlertsByThreshold(
+        @RequestParam double threshold
+    ) {
+        List<AlertsModel> alerts = alertsServices.findByThresholdGreaterThan(threshold);
+        return ResponseEntity.ok(alerts);
     }
 
-    @DeleteMapping("/deleteAlert")
-    public void deleteAlert(@RequestParam("id") long id) {
-        alertsService.deleteAlert(id);
+    // Actualizar una alerta existente
+    @PutMapping("/update/{alertId}")
+    public ResponseEntity<AlertsModel> updateAlert(
+        @PathVariable Long alertId, 
+        @RequestParam double threshold
+    ) {
+        AlertsModel updatedAlert = alertsServices.updateAlert(alertId, threshold);
+        return ResponseEntity.ok(updatedAlert);
     }
 
-    /* @GetMapping("/checkAlert")
-    public boolean checkAlert(@RequestParam("id") long id) {
-        return alertsService.checkAlert(id, id);
-    } */
-
-    // Other methods for handling alerts
-
-    @GetMapping("/FindByThresholdGreaterThan")
-    public List<AlertsModel> findByThresholdGreaterThan(@RequestParam("threshold") double threshold) {
-        return alertsService.findByThresholdGreaterThan(threshold);
+    // Eliminar una alerta
+    @DeleteMapping("/delete/{alertId}")
+    public ResponseEntity<Void> deleteAlert(@PathVariable Long alertId) {
+        alertsServices.deleteAlert(alertId);
+        return ResponseEntity.noContent().build();
     }
 
+    // Verificar alerta para un dispositivo
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkAlert(
+        @RequestParam Long deviceId, 
+        @RequestParam double currentConsumption
+    ) {
+        boolean isAlertTriggered = alertsServices.checkAlert(deviceId, currentConsumption);
+        return ResponseEntity.ok(isAlertTriggered);
+    }
+
+    // Obtener alerta por ID
+    @GetMapping("/{alertId}")
+    public ResponseEntity<AlertsModel> getAlertById(@PathVariable Long alertId) {
+        AlertsModel alert = alertsServices.findById(alertId);
+        if (alert != null) {
+            return ResponseEntity.ok(alert);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
