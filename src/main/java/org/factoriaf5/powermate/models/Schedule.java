@@ -73,3 +73,4 @@ public class Schedule {
         throw new UnsupportedOperationException("Unimplemented method 'setDeviceOn'");
     }
 }
+
