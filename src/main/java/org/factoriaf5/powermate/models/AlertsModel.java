@@ -12,7 +12,7 @@ public class AlertsModel {
 @Column(name = "id")
 private Long id;
 @OneToOne
-@JoinColumn(name = "Device")
+@JoinColumn(name = "device_id")
 private Device device;
 @Column(name = "threshold")
 private double threshold;
