@@ -1,30 +1,26 @@
 package org.factoriaf5.powermate.services;
 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.factoriaf5.powermate.models.AlertsModel;
-import org.factoriaf5.powermate.services.AlertsServices;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.factoriaf5.powermate.models.Device;
+import org.factoriaf5.powermate.repositories.AlertRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
 
 class AlertsServicesTest {
 
     @Mock
-    private AlertsServices.AlertRepository alertRepository;
+    private AlertRepository alertRepository;
 
     @InjectMocks
     private AlertsServices alertsServices;
@@ -36,37 +32,37 @@ class AlertsServicesTest {
 
     @Test
     void testFindByThresholdGreaterThan() {
-        double threshold = 50.0;
         AlertsModel alert1 = new AlertsModel();
+        alert1.setThreshold(50.0);
+
         AlertsModel alert2 = new AlertsModel();
-        List<AlertsModel> expectedAlerts = Arrays.asList(alert1, alert2);
+        alert2.setThreshold(80.0);
 
-        when(alertRepository.findByThresholdGreaterThan(threshold)).thenReturn(expectedAlerts);
+        when(alertRepository.findAll()).thenReturn(List.of(alert1, alert2));
 
-        List<AlertsModel> result = alertsServices.findByThresholdGreaterThan(threshold);
+        List<AlertsModel> result = alertsServices.findByThresholdGreaterThan(60.0);
 
-        assertEquals(expectedAlerts, result);
-        verify(alertRepository, times(1)).findByThresholdGreaterThan(threshold);
+        assertEquals(1, result.size());
+        assertEquals(80.0, result.get(0).getThreshold());
+        verify(alertRepository, times(1)).findAll();
     }
 
     @Test
     void testCreateAlert() {
-        Long userId = 1L;
-        Long deviceId = 1L;
-        double threshold = 60.0;
+        Device device = new Device();
+        device.setId(1L);
+
         AlertsModel alert = new AlertsModel();
-        alert.setUserid(userId);
-        alert.setDeviceid(deviceId);
-        alert.setThreshold(threshold);
+        alert.setDevice(device);
+        alert.setThreshold(70.0);
 
         when(alertRepository.save(any(AlertsModel.class))).thenReturn(alert);
 
-        AlertsModel createdAlert = alertsServices.createAlert(userId, deviceId, threshold);
+        AlertsModel createdAlert = alertsServices.createAlert(device, 70.0);
 
         assertNotNull(createdAlert);
-        assertEquals(userId, createdAlert.getUserid());
-        assertEquals(deviceId, createdAlert.getDeviceid());
-        assertEquals(threshold, createdAlert.getThreshold());
+        assertEquals(device, createdAlert.getDevice());
+        assertEquals(70.0, createdAlert.getThreshold());
         verify(alertRepository, times(1)).save(any(AlertsModel.class));
     }
 
@@ -74,49 +70,78 @@ class AlertsServicesTest {
     void testDeleteAlert() {
         Long alertId = 1L;
 
+        doNothing().when(alertRepository).deleteById(alertId);
+
         alertsServices.deleteAlert(alertId);
 
         verify(alertRepository, times(1)).deleteById(alertId);
     }
 
     @Test
-    void testCheckAlert_Activated() {
-        Long deviceId = 1L;
-        double currentConsumption = 70.0;
+    void testFindById() {
+        Long alertId = 1L;
+
         AlertsModel alert = new AlertsModel();
-        alert.setThreshold(50.0);
-        alert.setUserid(1L);
-        List<AlertsModel> alerts = Arrays.asList(alert);
+        alert.setId(alertId);
 
-        when(alertRepository.findByDeviceId(deviceId)).thenReturn(alerts);
+        when(alertRepository.findById(alertId)).thenReturn(Optional.of(alert));
 
-        boolean result = alertsServices.checkAlert(deviceId, currentConsumption);
+        AlertsModel result = alertsServices.findById(alertId);
 
-        assertTrue(result);
-        verify(alertRepository, times(1)).findByDeviceId(deviceId);
+        assertNotNull(result);
+        assertEquals(alertId, result.getId());
+        verify(alertRepository, times(1)).findById(alertId);
     }
 
     @Test
-    void testCheckAlert_NotActivated() {
+    void testCheckAlert() {
         Long deviceId = 1L;
-        double currentConsumption = 40.0;
+        double currentConsumption = 80.0;
+
+        Device device = new Device();
+        device.setId(deviceId);
+
+        when(alertRepository.findAll()).thenReturn(List.of());
+
         AlertsModel alert = new AlertsModel();
-        alert.setThreshold(50.0);
-        List<AlertsModel> alerts = Arrays.asList(alert);
+        alert.setDevice(device);
+        alert.setThreshold(70.0);
 
-        when(alertRepository.findByDeviceId(deviceId)).thenReturn(alerts);
+        when(alertRepository.findAll()).thenReturn(List.of(alert));
 
-        boolean result = alertsServices.checkAlert(deviceId, currentConsumption);
+        boolean isAlertTriggered = alertsServices.checkAlert(deviceId, currentConsumption);
 
-        assertFalse(result);
-        verify(alertRepository, times(1)).findByDeviceId(deviceId);
+        assertFalse(isAlertTriggered);
+        verify(alertRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testCheckAlertNoMatch() {
+        Long deviceId = 1L;
+        double currentConsumption = 50.0;
+
+        Device device = new Device();
+        device.setId(deviceId);
+
+        AlertsModel alert = new AlertsModel();
+        alert.setDevice(device);
+        alert.setThreshold(70.0);
+
+        when(alertRepository.findAll()).thenReturn(List.of(alert));
+
+        boolean isAlertTriggered = alertsServices.checkAlert(deviceId, currentConsumption);
+
+        assertFalse(isAlertTriggered);
+        verify(alertRepository, times(1)).findAll();
     }
 
     @Test
     void testUpdateAlert() {
         Long alertId = 1L;
-        double newThreshold = 80.0;
+        double newThreshold = 90.0;
+
         AlertsModel alert = new AlertsModel();
+        alert.setId(alertId);
         alert.setThreshold(50.0);
 
         when(alertRepository.findById(alertId)).thenReturn(Optional.of(alert));
@@ -129,4 +154,155 @@ class AlertsServicesTest {
         verify(alertRepository, times(1)).findById(alertId);
         verify(alertRepository, times(1)).save(alert);
     }
+
+    @Test
+    void testFindAllWithFilter() {
+        // Mock data
+        Device device = new Device();
+        device.setId(5L); // assuming you want to set the id of the device
+
+        Device device1 = new Device();
+        device1.setId(3L);
+
+        Device device2 = new Device();
+        device2.setId(6L);
+
+        AlertsModel alert1 = new AlertsModel();
+        alert1.setDevice(device1);
+        alert1.setThreshold(50.0);
+
+        AlertsModel alert2 = new AlertsModel();
+        alert2.setDevice(device2);
+        alert2.setThreshold(80.0);
+
+        List<AlertsModel> mockAlerts = List.of(alert1, alert2);
+
+        
+        when(alertRepository.findAll()).thenReturn(mockAlerts);
+
+
+        List<AlertsModel> filteredAlerts = alertsServices.findByThresholdGreaterThan(60.0);
+        
+        assertEquals(1, filteredAlerts.size());
+        assertEquals(6L, filteredAlerts.get(0).getDevice().getId());
+    }
+    @Test
+    void testNoAlertsTriggered() {
+        
+        Long deviceId = 5L;
+
+        Device device1 = new Device();
+        device1.setId(3L);
+
+        Device device2 = new Device();
+        device2.setId(6L);
+
+        AlertsModel alert1 = new AlertsModel();
+        alert1.setDevice(device1);
+        alert1.setThreshold(50.0);
+        AlertsModel alert2 = new AlertsModel();
+        alert2.setDevice(device2);
+        alert2.setThreshold(80.0);
+
+        List<AlertsModel> mockAlerts = List.of(alert1, alert2);
+
+        
+        when(alertRepository.findAll()).thenReturn(mockAlerts);
+
+    
+        boolean result = alertsServices.checkAlert(deviceId, 40.0);
+        
+        assertFalse(result);
+    }
+
+    @Test
+    void testAlertTriggered() {
+    
+    Long deviceId = 5L;
+
+    Device device1 = new Device();
+    device1.setId(3L);
+
+    Device device2 = new Device();
+    device2.setId(6L);
+
+    AlertsModel alert1 = new AlertsModel();
+    alert1.setDevice(device1);
+    alert1.setThreshold(50.0);
+    AlertsModel alert2 = new AlertsModel();
+    alert2.setDevice(device2);
+    alert2.setThreshold(80.0); 
+
+    List<AlertsModel> mockAlerts = List.of(alert1, alert2);
+
+
+    when(alertRepository.findAll()).thenReturn(mockAlerts);
+
+
+    boolean result = alertsServices.checkAlert(deviceId, 90.0); 
+
+    
+    assertTrue(result);
 }
+
+
+@Test
+void testDeviceNotPresent() {
+    
+    Long deviceId = 10L;
+
+    Device device1 = new Device();
+    device1.setId(3L);
+
+    Device device2 = new Device();
+    device2.setId(6L);
+
+    AlertsModel alert1 = new AlertsModel();
+    alert1.setDevice(device1);
+    alert1.setThreshold(50.0);
+    AlertsModel alert2 = new AlertsModel();
+    alert2.setDevice(device2);
+    alert2.setThreshold(80.0);
+
+    List<AlertsModel> mockAlerts = List.of(alert1, alert2);
+
+
+    when(alertRepository.findAll()).thenReturn(mockAlerts);
+
+    boolean result = alertsServices.checkAlert(deviceId, 70.0);
+
+    assertFalse(result);
+}
+@Test
+void testAlertNotTriggeredByConsumption() {
+    // Datos simulados
+    Long deviceId = 5L;
+
+    Device device1 = new Device();
+    device1.setId(3L);
+
+    Device device2 = new Device();
+    device2.setId(6L);
+
+    AlertsModel alert1 = new AlertsModel();
+    alert1.setDevice(device1);
+    alert1.setThreshold(50.0);
+    AlertsModel alert2 = new AlertsModel();
+    alert2.setDevice(device2);
+    alert2.setThreshold(80.0);
+
+    List<AlertsModel> mockAlerts = List.of(alert1, alert2);
+
+    
+    when(alertRepository.findAll()).thenReturn(mockAlerts);
+
+    boolean result = alertsServices.checkAlert(deviceId, 40.0);
+
+
+    assertFalse(result);
+}
+}
+
+    
+
+
