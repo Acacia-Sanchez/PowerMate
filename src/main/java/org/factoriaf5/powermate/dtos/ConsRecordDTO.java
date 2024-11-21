@@ -20,6 +20,10 @@ public class ConsRecordDTO {
         this.deviceId = consRecord.getDevice().getId();
     }
 
+    public ConsRecordDTO() {
+        //TODO Auto-generated constructor stub
+    }
+
     public Long getId() {
         return id;
     }
