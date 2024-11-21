@@ -1,7 +1,6 @@
 package org.factoriaf5.powermate.services;
 
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 import org.factoriaf5.powermate.models.ConsRecord;
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.repositories.ConsRecordRepository;
-import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,6 @@ public class ConsRecordService {
 
     private final Map<Long, Double> totalConsumptions = new HashMap<>();
 
-    public ConsRecordService(ConsRecordRepository consRecordRepository, DeviceRepository deviceRepository) {
     public ConsRecordService(ConsRecordRepository consRecordRepository, DeviceRepository deviceRepository) {
         this.consRecordRepository = consRecordRepository;
         this.deviceRepository = deviceRepository;
