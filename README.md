@@ -2,14 +2,28 @@
 ### Proyecto Didáctico: Sistema de Gestión de Energía para Hogares Inteligentes
 
 ### EQUIPO 1: 
-* PRODUCT OWNER: Andrés 
-* SCRUM MASTER: Roberto
-* DEVELOPER: Maria [Github](https://github.com/strawmery)
+* PRODUCT OWNER: Andrés Vázquez [Github](https://github.com/andresvaz89)
+* SCRUM MASTER: Roberto Lumbreras [Github](https://github.com/roberto-lumbreras)
+* DEVELOPER: Maria García [Github](https://github.com/strawmery)
+* DEVELOPER: Abel Prieto [Github](https://github.com/abelpriem)
+* DEVELOPER: Naudelyn Lucena [Github](https://github.com/NaudelynLucena)
+* DEVELOPER: Pilar Pato [Github](https://github.com/Pilar-Pato)
+* DEVELOPER: Lara Gutiérrez [Github](https://github.com/lara-gs)
+* DEVELOPER: Ana Hernández [Github](https://github.com/AnaBHernandez)
+* DEVELOPER: Susana Artime [Github](https://github.com/Susana-Artime)
+* DEVELOPER: Rubén Blanco [Github](https://github.com/Ruben-BV)
 
 ### EQUIPO 2: 
 * PRODUCT OWNER: Acacia Sánchez Pastur [Github](https://github.com/Acacia-Sanchez)
-* SCRUM MASTER: Juan Camilo
-* 
+* SCRUM MASTER: Juan Camilo [Github](https://github.com/Juanito2005)
+* DEVELOPER: Adrian Caiñas [Github](https://github.com/acr00)
+* DEVELOPER: Andrea Martinez [Github](https://github.com/andreamsgi27)
+* DEVELOPER: Óscar Menéndez [Github](https://github.com/Morty1904)
+* DEVELOPER: Mercy Chancayauri [Github](https://github.com/mercyluz)
+* DEVELOPER: Alejandra Sierra [Github](https://github.com/alejandra-sierra)
+* DEVELOPER: Estefany Ochoa [Github](https://github.com/EstefanyOchoaRomero)
+* DEVELOPER: Kevin Boy [Github](https://github.com/sealkboy)
+* DEVELOPER: Guadalupe G.Figeroa [Github](https://github.com/GuadalupeGFigueroa)
 
 ## 1. Objetivos del Proyecto
 ¿Cómo podríamos diseñar un sistema que ayude a las personas a ahorrar energía y controlar sus dispositivos desde cualquier lugar?
@@ -134,20 +148,3 @@ El proyecto consiste en crear un backend que permita a los usuarios:
         * /api/consumption: Consumo en tiempo real.
         * /api/alerts: Gestión de alertas.
         * /api/schedule: Programación de dispositivos
-### Colaboradores:
-- [Alejandra Sierra](https://github.com/alejandra-sierra)  
-- [Guadalupe Figueroa](https://github.com/GuadalupeGFigueroa)  
-- [Lara Gutiérrez](https://github.com/lara-gs)  
-- [Maria Straw](https://github.com/strawmery)  
-- [Pilar Pato](https://github.com/Pilar-Pato)  
-- [Naudelyn Lucena](https://github.com/NaudelynLucena)  
-- [Roberto Lumbreras](https://github.com/roberto-lumbreras)  
-- [Ana Hernández](https://github.com/AnaBHernandez)  
-- [Acacia Sánchez](https://github.com/acr00)  
-- [Estefany Ochoa](https://github.com/EstefanyOchoaRomero)  
-- [Andrea García](https://github.com/andreamsgi27)  
-- [Susana Artime](https://github.com/Susana-Artime)  
-- [Andrés Vázquez](https://github.com/andresvaz89)  
-
-
- 
