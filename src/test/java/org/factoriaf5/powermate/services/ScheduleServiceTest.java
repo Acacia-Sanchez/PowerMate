@@ -30,7 +30,7 @@ class ScheduleServiceTest {
         MockitoAnnotations.openMocks(this);  // Inicializa los mocks
         scheduleService = new ScheduleService(scheduleRepository, deviceRepository);
     }
-
+ 
     @Test
     void testCreateSchedule() {
         // Arrange: Creamos un dispositivo simulado y un DTO

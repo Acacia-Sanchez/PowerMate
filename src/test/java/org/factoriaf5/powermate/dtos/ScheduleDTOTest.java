@@ -57,5 +57,6 @@ class ScheduleDTOTest {
         assertEquals(LocalDateTime.of(2024, 11, 22, 10, 0), scheduleDTO.getStartTime(), "La hora de inicio debe haber sido actualizada.");
         assertEquals(LocalDateTime.of(2024, 11, 22, 12, 0), scheduleDTO.getEndTime(), "La hora de finalización debe haber sido actualizada.");
     }
+    
 }
 
