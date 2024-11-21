@@ -19,7 +19,12 @@ public class Schedule {
 
     public Schedule() {
     }
-    public Schedule(Device device, LocalDateTime startTime, LocalDateTime endTime) { this.device = device; this.startTime = startTime; this.endTime = endTime; }
+    public Schedule(Long id, Device device, LocalDateTime startTime, LocalDateTime endTime) 
+    {   this.id = id;
+        this.device = device;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
     
     // Getters y setters
     public Long getId() {
