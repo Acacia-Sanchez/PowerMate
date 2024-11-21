@@ -25,34 +25,20 @@ public class ScheduleController {
 
     ScheduleService scheduleService;
 
-    public ScheduleController(ScheduleService scheduleService, DeviceRepository deviceRepository) {
+    public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
-        this.deviceRepository = deviceRepository;
     }
 
     @PostMapping
-    public ResponseEntity<Schedule> createSchedule(
-            @RequestBody Long deviceId,
-            @RequestBody LocalDateTime startTime,
-            @RequestBody LocalDateTime endTime) {
-        Device device = deviceRepository.findById(deviceId)
-                .orElseThrow(() -> new RuntimeException("Dispositivo no encontrado"));
-        Schedule schedule = new Schedule(device, startTime, endTime);
-        scheduleService.createSchedule(schedule);
-        return ResponseEntity.status(HttpStatus.CREATED).body(schedule);
+    public ResponseEntity<ScheduleDTO> createSchedule(@RequestBody ScheduleDTO schedule) {
+        return new ResponseEntity<>(scheduleService.createSchedule(schedule), HttpStatus.CREATED);
     }
     
     @PutMapping ("/{scheduleId}")
-    public ResponseEntity<Schedule> updateSchedule(
+    public ResponseEntity<ScheduleDTO> updateSchedule(
             @PathVariable Long scheduleId,
-            @RequestBody LocalDateTime startTime,
-            @RequestBody LocalDateTime endTime) {
-        Schedule schedule = new Schedule();
-        schedule.setId(scheduleId);
-        schedule.setStartTime(startTime);
-        schedule.setEndTime(endTime);
-        scheduleService.updateSchedule(scheduleId, schedule);
-        return ResponseEntity.ok(schedule);
+            @RequestBody ScheduleDTO scheduleDto) {
+                return new ResponseEntity<>(scheduleService.updateSchedule(scheduleId, scheduleDto), HttpStatus.OK);
     }
 
     @DeleteMapping ("/{scheduleId}")
@@ -63,9 +49,8 @@ public class ScheduleController {
 
     //Este método es para que te salgan todos los horarios programados de un dispositivo
     @GetMapping ("/{deviceId}")
-    public ResponseEntity<List<Schedule>> getAllSchedules(@PathVariable Long deviceId) {
-        List<Schedule> schedules = scheduleService.getAllSchedulesByDeviceId(deviceId);
-        return ResponseEntity.ok(schedules);
+    public ResponseEntity<List<ScheduleDTO>> getAllSchedules(@PathVariable Long deviceId) {
+        return new ResponseEntity<>(scheduleService.getAllSchedulesByDeviceId(deviceId), HttpStatus.OK);
     }
 
     @GetMapping("/check-status/{deviceId}")
