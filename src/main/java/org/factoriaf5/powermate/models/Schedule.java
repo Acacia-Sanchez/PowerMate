@@ -64,4 +64,13 @@ public class Schedule {
         LocalDateTime now = LocalDateTime.now();
         return !now.isBefore(startTime) && !now.isAfter(endTime);  // Si la hora actual está dentro del rango, está encendido
     }
+    public void setDevice(long l) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDevice'");
+    }
+    public void setDeviceOn(boolean b) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDeviceOn'");
+    }
 }
+

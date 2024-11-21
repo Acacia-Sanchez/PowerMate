@@ -20,6 +20,10 @@ public class ScheduleDTO {
     this.endTime = schedule.getEndTime();
     }
 
+    public ScheduleDTO() {
+        //TODO Auto-generated constructor stub
+    }
+
     public Long getId() {
         return id;
     }
