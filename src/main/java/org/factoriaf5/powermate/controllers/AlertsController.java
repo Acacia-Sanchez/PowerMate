@@ -2,8 +2,8 @@ package org.factoriaf5.powermate.controllers;
 
 import java.util.List;
 
+import org.factoriaf5.powermate.dtos.AlertsDTO;
 import org.factoriaf5.powermate.models.AlertsModel;
-import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.services.AlertsServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +29,8 @@ public class AlertsController {
 
     // Crear una nueva alerta
     @PostMapping("/create")
-    public ResponseEntity<AlertsModel> createAlert(
-        @RequestBody Device device, 
-        @RequestParam double threshold
-    ) {
-        AlertsModel createdAlert = alertsServices.createAlert(device, threshold);
+    public ResponseEntity<AlertsModel> createAlert(@RequestBody AlertsDTO alertDTO) {
+        AlertsModel createdAlert = alertsServices.createAlert(alertDTO);
         return new ResponseEntity<>(createdAlert, HttpStatus.CREATED);
     }
 

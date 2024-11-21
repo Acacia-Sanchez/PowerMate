@@ -2,9 +2,10 @@ package org.factoriaf5.powermate.services;
 
 import java.util.List;
 
+import org.factoriaf5.powermate.dtos.AlertsDTO;
 import org.factoriaf5.powermate.models.AlertsModel;
-import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.repositories.AlertRepository;
+import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.springframework.stereotype.Service;
 
 
@@ -15,21 +16,23 @@ public class AlertsServices {
 
 
     private final AlertRepository alertRepository;
+    private final DeviceRepository deviceRepository;
 
 
 
-    public AlertsServices(AlertRepository alertRepository) {
+    public AlertsServices(AlertRepository alertRepository, DeviceRepository deviceRepository) {
         this.alertRepository = alertRepository;
+        this.deviceRepository = deviceRepository;
     }
 
     public List<AlertsModel> findByThresholdGreaterThan(double threshold) {
         return alertRepository.findAll().stream().filter(x -> x.getThreshold()>threshold).toList();
     }
 
-    public AlertsModel createAlert(Device device, double threshold) {
+    public AlertsModel createAlert(AlertsDTO alertDto) {
         AlertsModel alert = new AlertsModel();
-        alert.setDevice(device);
-        alert.setThreshold(threshold);
+        alert.setDevice(deviceRepository.findById(alertDto.getDeviceid()).orElse(null));
+        alert.setThreshold(alertDto.getThreshold());
         return alertRepository.save(alert);
     }
 
