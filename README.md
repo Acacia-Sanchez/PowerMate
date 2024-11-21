@@ -148,4 +148,6 @@ El proyecto consiste en crear un backend que permita a los usuarios:
         * /api/consumption: Consumo en tiempo real.
         * /api/alerts: Gestión de alertas.
         * /api/schedule: Programación de dispositivos
- 
+
+## 4. DIAGRAMA UML
+![image](https://github.com/user-attachments/assets/0e467b9f-7513-4928-8910-c791f062a3c2)
