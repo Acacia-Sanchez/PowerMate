@@ -11,10 +11,9 @@ public class AlertsModel {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 @Column(name = "id")
 private Long id;
-@Column(name = "user_id")
-private Long userid;
-@Column(name = "device_id")
-private long deviceid;
+@OneToOne
+@JoinColumn(name = "device_id")
+private Device device;
 @Column(name = "threshold")
 private double threshold;
 
@@ -23,24 +22,20 @@ public AlertsModel(){
 }
 
 public AlertsModel(long id){
-    this.id=id;    
+    this.id=id;
 }
 
-public AlertsModel(long id, long userid, long deviceid, double threshold){
+public AlertsModel(long id, Device device, double threshold){
     this.id = id;
-    this.userid = userid;
-    this.deviceid = deviceid;
+    this.device = device;
     this.threshold = threshold;
 }
 
 public Long getId() {
     return id;
 }
-public Long getUserid() {
-    return userid;
-}
-public long getDeviceid() {
-    return deviceid;
+public Device getDevice() {
+    return device;
 }
 public double getThreshold() {
     return threshold;
@@ -48,15 +43,12 @@ public double getThreshold() {
 public void setId(Long id) {
     this.id = id;
 }
-public void setUserid(Long userid) {
-    this.userid = userid;
-}
-public void setDeviceid(long deviceid) {
-    this.deviceid = deviceid;
+public void setDevice(Device device) {
+    this.device = device;
 }
 public void setThreshold(double threshold) {
     this.threshold = threshold;
 }
 
- 
+
 }
