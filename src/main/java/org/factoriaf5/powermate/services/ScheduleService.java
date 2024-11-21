@@ -3,23 +3,28 @@ package org.factoriaf5.powermate.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.factoriaf5.powermate.dtos.DeviceDTO;
+import org.factoriaf5.powermate.dtos.ScheduleDTO;
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.models.Schedule;
+import org.factoriaf5.powermate.models.User;
 import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.factoriaf5.powermate.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ScheduleService {
-    private ScheduleRepository scheduleRepository;
-    private DeviceRepository deviceRepository;
+    ScheduleRepository repository;
+    DeviceRepository deviceRepository;
 
-@Autowired
-public ScheduleService(ScheduleRepository scheduleRepository, DeviceRepository deviceRepository) {
-    this.scheduleRepository = scheduleRepository;
+public ScheduleService(ScheduleRepository repository, DeviceRepository deviceRepository){
+    this.repository = repository;
     this.deviceRepository = deviceRepository;
 }
+
+//métodos:
 
 public void changeStatusOn(Device device, LocalDateTime startTime) {
     LocalDateTime currentTime = LocalDateTime.now();
@@ -37,26 +42,41 @@ public void changeStatusOff(Device device, LocalDateTime endTime) {
     }
 }
 
-    public void createSchedule(Schedule schedule) {
-        scheduleRepository.save(schedule);
+    public ScheduleDTO createSchedule(ScheduleDTO scheduleDto) {
+        Device device = deviceRepository.findById(scheduleDto.getDeviceId()).orElse(null);
+        if(device!=null){
+            Schedule schedule = new Schedule(scheduleDto.getId(), device, scheduleDto.getStartTime(), scheduleDto.getEndTime());
+            return new ScheduleDTO(repository.save(schedule));
+        }else {
+            throw new RuntimeException("Device not found with deviceId: " + scheduleDto.getDeviceId() + ". Status: " + HttpStatus.NOT_FOUND);
+        }
+        
     }
 
-    public void updateSchedule(Long id, Schedule schedule) {
-        scheduleRepository.findById(id)
-            .map(existingSchedule -> {
-                existingSchedule.setStartTime(schedule.getStartTime());
-                existingSchedule.setEndTime(schedule.getEndTime());
-                return scheduleRepository.save(existingSchedule);
-            })
-            .orElseThrow(() -> new RuntimeException("No se encontró el programa"));
+    public ScheduleDTO updateSchedule(Long id, ScheduleDTO schedule) {
+        Schedule existingSchedule = repository.findById(id).orElse(null);
+        if(existingSchedule!=null){
+            Device device = deviceRepository.findById(schedule.getDeviceId()).orElse(null);
+            existingSchedule.setDevice(device);
+            existingSchedule.setStartTime(schedule.getStartTime());
+            existingSchedule.setEndTime(schedule.getEndTime());
+            return new ScheduleDTO(repository.save(existingSchedule));
+        }else{
+            throw new RuntimeException("Schedule not found with id: " + id + ". Status: " + HttpStatus.NOT_FOUND);
+        }
     }
 
     public void deleteSchedule(Long id) {
-        scheduleRepository.deleteById(id);
+        Schedule schedule = repository.findById(id).orElse(null);
+        if(schedule!=null){
+            repository.deleteById(id);
+        }else{
+            throw new RuntimeException("Schedule not found with id: " + id + ". Status: " + HttpStatus.NOT_FOUND);
         }
+    }
     
     public List<Schedule> getAllSchedulesByDeviceId(Long deviceId) {
-        return scheduleRepository.findAll().stream().filter(x -> x.getDevice().getId().equals(deviceId)).toList();
+        return repository.findAll().stream().filter(x -> x.getDevice().getId().equals(deviceId)).toList();
     }
         
 
@@ -67,14 +87,11 @@ public void changeStatusOff(Device device, LocalDateTime endTime) {
         List<Schedule> schedules = getAllSchedulesByDeviceId(deviceId);
     
         for (Schedule schedule : schedules) {
-            if (schedule.isDeviceOn()) {
-                if (!device.isStatus()) {
-                    return "El dispositivo debería estar encendido.";
-                }
-            } else {
-                if (device.isStatus()) {
-                    return "El dispositivo debería estar apagado.";
-                }
+            if (schedule.isDeviceOn()&&!device.isStatus()) {
+                return "El dispositivo debería estar encendido y esta apagado.";
+            } 
+            if (!schedule.isDeviceOn()&&device.isStatus()){
+                return "El dispositivo debería estar apagado y esta encendido.";
             }
         }
         return "El dispositivo se encuentra encendido/apagado siguiendo lo programado.";
