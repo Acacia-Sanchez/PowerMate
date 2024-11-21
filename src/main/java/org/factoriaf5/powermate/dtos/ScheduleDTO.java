@@ -10,6 +10,9 @@ public class ScheduleDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
+    public ScheduleDTO(){
+    }
+
     public ScheduleDTO(Schedule schedule) {
     this.id = schedule.getId();
     this.deviceId = schedule.getDevice().getId();

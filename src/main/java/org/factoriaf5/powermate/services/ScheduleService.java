@@ -7,10 +7,8 @@ import org.factoriaf5.powermate.dtos.DeviceDTO;
 import org.factoriaf5.powermate.dtos.ScheduleDTO;
 import org.factoriaf5.powermate.models.Device;
 import org.factoriaf5.powermate.models.Schedule;
-import org.factoriaf5.powermate.models.User;
 import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.factoriaf5.powermate.repositories.ScheduleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,18 +24,20 @@ public ScheduleService(ScheduleRepository repository, DeviceRepository deviceRep
 
 //métodos:
 
-public void changeStatusOn(Device device, LocalDateTime startTime) {
+public void changeStatusOn(DeviceDTO deviceDto, LocalDateTime startTime) {
     LocalDateTime currentTime = LocalDateTime.now();
-    if (startTime.equals(currentTime)) {
+    Device device = deviceRepository.findById(deviceDto.getId()).orElse(null);
+    if (startTime.equals(currentTime) && device != null) {
         device.setStatus(true);
         deviceRepository.save(device);
     }
 }
 
-public void changeStatusOff(Device device, LocalDateTime endTime) {
+public void changeStatusOff(DeviceDTO deviceDto, LocalDateTime endTime) {
     LocalDateTime currentTime = LocalDateTime.now();
-    if (endTime.equals(currentTime)) {
-        device.setStatus(false);
+    Device device = deviceRepository.findById(deviceDto.getId()).orElse(null);
+    if (endTime.equals(currentTime) && device != null) {
+        device.setStatus(true);
         deviceRepository.save(device);
     }
 }
