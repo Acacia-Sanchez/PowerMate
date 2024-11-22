@@ -10,7 +10,6 @@ public class ConsRecordDTO {
     private double consumption;
     private LocalDateTime timestamp;
 
-    // Constructor a partir de la entidad ConsRecord
     public ConsRecordDTO(ConsRecord consRecord) {
         this.id = consRecord.getId();
         this.deviceId = consRecord.getDevice().getId();
@@ -18,11 +17,9 @@ public class ConsRecordDTO {
         this.timestamp = consRecord.getTimestamp();
     }
 
-    // Constructor vacío
     public ConsRecordDTO() {
     }
 
-    // Getters y setters
     public Long getId() {
         return id;
     }

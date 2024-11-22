@@ -25,32 +25,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 1. Crear un nuevo usuario
     @PostMapping(path = "/admin/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    // 2. Obtener un usuario por su ID
-    /*
-     * @GetMapping("/users/{id}")
-     * public ResponseEntity<User> getUserById(@PathVariable Long id) {
-     * Optional<User> user = userService.getUserById(id);
-     * return user.map(ResponseEntity::ok)
-     * .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-     * .body(null));
-     * }
-     */
-
-    // 3. Obtener todos los usuarios
     @GetMapping(path = "/users")
     public ResponseEntity<List<User>> listUsers() {
         List<User> users = userService.listUsers();
         return ResponseEntity.ok(users);
     }
 
-    // 4. Actualizar un usuario existente
     @PutMapping("/admin/users/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User userDetails) {
         try {
@@ -62,7 +48,6 @@ public class UserController {
         }
     }
 
-    // 5. Eliminar un usuario
     @DeleteMapping("/admin/users/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         if (userService.getUserById(userId).isPresent()) {

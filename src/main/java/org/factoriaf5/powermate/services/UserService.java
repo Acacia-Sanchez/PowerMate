@@ -27,25 +27,19 @@ public class UserService implements UserDetailsService{
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Crear un nuevo usuario
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
-    // Obtener todos los usuarios
     public List<User> listUsers() {
         return userRepository.findAll();
     }
-
-    // Obtener un usuario por userId
-    // Optional es contenedor para valores que pueden estar o no presentes (null)
 
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
     }
 
-    // Actualizar un usuario existente
     public User updateUser(Long userId, User userDetails) {
         return userRepository.findById(userId).map(user -> {
             user.setUsername(userDetails.getUsername());
@@ -55,7 +49,6 @@ public class UserService implements UserDetailsService{
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con userId: " + userId));
     }
 
-    // Eliminar un usuario por userId
     public void deleteUser(Long userId) {
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);

@@ -27,14 +27,12 @@ public class AlertsController {
         this.alertsServices = alertsServices;
     }
 
-    // Crear una nueva alerta
     @PostMapping("/create")
     public ResponseEntity<AlertsModel> createAlert(@RequestBody AlertsDTO alertDTO) {
         AlertsModel createdAlert = alertsServices.createAlert(alertDTO);
         return new ResponseEntity<>(createdAlert, HttpStatus.CREATED);
     }
 
-    // Obtener alertas por umbral
     @GetMapping("/threshold")
     public ResponseEntity<List<AlertsModel>> getAlertsByThreshold(
         @RequestParam double threshold
@@ -43,7 +41,6 @@ public class AlertsController {
         return ResponseEntity.ok(alerts);
     }
 
-    // Actualizar una alerta existente
     @PutMapping("/update/{alertId}")
     public ResponseEntity<AlertsModel> updateAlert(
         @PathVariable Long alertId, 
@@ -53,14 +50,12 @@ public class AlertsController {
         return ResponseEntity.ok(updatedAlert);
     }
 
-    // Eliminar una alerta
     @DeleteMapping("/delete/{alertId}")
     public ResponseEntity<Void> deleteAlert(@PathVariable Long alertId) {
         alertsServices.deleteAlert(alertId);
         return ResponseEntity.noContent().build();
     }
 
-    // Verificar alerta para un dispositivo
     @GetMapping("/check")
     public ResponseEntity<Boolean> checkAlert(
         @RequestParam Long deviceId, 
@@ -70,7 +65,6 @@ public class AlertsController {
         return ResponseEntity.ok(isAlertTriggered);
     }
 
-    // Obtener alerta por ID
     @GetMapping("/{alertId}")
     public ResponseEntity<AlertsModel> getAlertById(@PathVariable Long alertId) {
         AlertsModel alert = alertsServices.findById(alertId);

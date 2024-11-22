@@ -47,7 +47,6 @@ public class ScheduleController {
         return ResponseEntity.noContent().build();
     }
 
-    //Este método es para que te salgan todos los horarios programados de un dispositivo
     @GetMapping ("/{deviceId}")
     public ResponseEntity<List<ScheduleDTO>> getAllSchedules(@PathVariable Long deviceId) {
         return new ResponseEntity<>(scheduleService.getAllSchedulesByDeviceId(deviceId), HttpStatus.OK);
