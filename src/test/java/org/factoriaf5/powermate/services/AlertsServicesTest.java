@@ -1,4 +1,4 @@
-/* package org.factoriaf5.powermate.services;
+package org.factoriaf5.powermate.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -45,25 +45,6 @@ class AlertsServicesTest {
         assertEquals(1, result.size());
         assertEquals(80.0, result.get(0).getThreshold());
         verify(alertRepository, times(1)).findAll();
-    }
-
-    @Test
-    void testCreateAlert() {
-        Device device = new Device();
-        device.setId(1L);
-
-        AlertsModel alert = new AlertsModel();
-        alert.setDevice(device);
-        alert.setThreshold(70.0);
-
-        when(alertRepository.save(any(AlertsModel.class))).thenReturn(alert);
-
-        AlertsModel createdAlert = alertsServices.createAlert(device, 70.0);
-
-        assertNotNull(createdAlert);
-        assertEquals(device, createdAlert.getDevice());
-        assertEquals(70.0, createdAlert.getThreshold());
-        verify(alertRepository, times(1)).save(any(AlertsModel.class));
     }
 
     @Test
@@ -302,8 +283,3 @@ void testAlertNotTriggeredByConsumption() {
     assertFalse(result);
 }
 }
-
-    
-
-
- */

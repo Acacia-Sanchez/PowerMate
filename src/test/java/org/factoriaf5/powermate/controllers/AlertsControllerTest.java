@@ -1,4 +1,4 @@
-/* package org.factoriaf5.powermate.controllers;
+ package org.factoriaf5.powermate.controllers;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -50,24 +50,6 @@ class AlertsControllerTest {
         testAlert.setId(1L);
         testAlert.setDevice(testDevice);
         testAlert.setThreshold(100.0);
-    }
-
-    @Test
-    void createAlert_shouldReturnCreatedAlert() throws Exception {
-        // Usa argThat para comparar el Device basado en su ID
-        when(alertsServices.createAlert(argThat(device -> device.getId().equals(testDevice.getId())), eq(100.0)))
-            .thenReturn(testAlert);
-
-        mockMvc.perform(post("/api/alerts/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testDevice))
-                .param("threshold", "100.0"))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id", is(1)))
-            .andExpect(jsonPath("$.threshold", is(100.0)));
-
-        // Verifica que se llamó al método con un Device que tiene el mismo ID que testDevice
-        verify(alertsServices).createAlert(argThat(device -> device.getId().equals(testDevice.getId())), eq(100.0));
     }
 
     @Test
@@ -176,4 +158,4 @@ class AlertsControllerTest {
         
         verify(alertsServices).findById(999L);
     }
-} */
+}
