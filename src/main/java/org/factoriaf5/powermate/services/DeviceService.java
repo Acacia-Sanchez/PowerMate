@@ -22,8 +22,6 @@ public class DeviceService {
         this.userRepository = userRepository;
     }
 
-    //implementar metodos del crud
-
     public List<DeviceDTO> getAll(){
         return repository.findAll().stream().map(x -> new DeviceDTO(x)).toList();
     }

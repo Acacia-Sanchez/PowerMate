@@ -1,12 +1,8 @@
 package org.factoriaf5.powermate.controllers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.factoriaf5.powermate.dtos.ScheduleDTO;
-import org.factoriaf5.powermate.models.Device;
-import org.factoriaf5.powermate.models.Schedule;
-import org.factoriaf5.powermate.repositories.DeviceRepository;
 import org.factoriaf5.powermate.services.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

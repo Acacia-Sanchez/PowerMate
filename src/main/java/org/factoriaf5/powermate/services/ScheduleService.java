@@ -22,8 +22,6 @@ public ScheduleService(ScheduleRepository repository, DeviceRepository deviceRep
     this.deviceRepository = deviceRepository;
 }
 
-//métodos:
-
 public void changeStatusOn(DeviceDTO deviceDto, LocalDateTime startTime) {
     LocalDateTime currentTime = LocalDateTime.now();
     Device device = deviceRepository.findById(deviceDto.getId()).orElse(null);
