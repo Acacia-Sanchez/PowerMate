@@ -149,3 +149,4 @@ El proyecto consiste en crear un backend que permita a los usuarios:
         * /api/alerts: Gestión de alertas.
         * /api/schedule: Programación de dispositivos
  
+"# PowerMate" 
