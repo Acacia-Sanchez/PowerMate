@@ -7,7 +7,7 @@ target/
 mvnw
 mvnw.cmd
 
-src/main/java/org/factoriaf5/powermate/assets/Captura tabla sprints arancha.png
+src\main\java\org\factoriaf5\powermate\assets\Captura tabla sprints arancha.png
 
 ### STS ###
 .apt_generated

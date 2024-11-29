@@ -10,18 +10,22 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne  // Relación de muchos a uno con Device (clave foránea)
-    @JoinColumn(name = "device_id")  // La columna device_id en la tabla Schedule se refiere a Device
-    private Device device;  // Aquí solo usamos la relación
+    @ManyToOne  
+    @JoinColumn(name = "device_id") 
+    private Device device;  
 
-    private LocalDateTime startTime;  // Hora de encendido
-    private LocalDateTime endTime;    // Hora de apagado
+    private LocalDateTime startTime; 
+    private LocalDateTime endTime;  
 
     public Schedule() {
     }
-    public Schedule(Device device, LocalDateTime startTime, LocalDateTime endTime) { this.device = device; this.startTime = startTime; this.endTime = endTime; }
+    public Schedule(Long id, Device device, LocalDateTime startTime, LocalDateTime endTime) 
+    {   this.id = id;
+        this.device = device;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
     
-    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -54,9 +58,8 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    // Método que verifica si el dispositivo debe estar encendido o apagado según la hora actual
     public boolean isDeviceOn() {
         LocalDateTime now = LocalDateTime.now();
-        return !now.isBefore(startTime) && !now.isAfter(endTime);  // Si la hora actual está dentro del rango, está encendido
+        return !now.isBefore(startTime) && !now.isAfter(endTime); 
     }
 }

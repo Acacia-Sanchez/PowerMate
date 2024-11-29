@@ -1,46 +1,39 @@
 package org.factoriaf5.powermate.controllers;
 
+import org.factoriaf5.powermate.dtos.ConsRecordDTO;
 import org.factoriaf5.powermate.models.ConsRecord;
 import org.factoriaf5.powermate.services.ConsRecordService;
 import org.factoriaf5.powermate.repositories.ConsRecordRepository;
-import org.factoriaf5.powermate.models.Device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/consumption")
 public class ConsRecordController {
 
     private final ConsRecordService consRecordService;
-    private final ConsRecordRepository consRecordRepository;
 
     @Autowired
     public ConsRecordController(ConsRecordService consRecordService, ConsRecordRepository consRecordRepository) {
         this.consRecordService = consRecordService;
-        this.consRecordRepository = consRecordRepository;
     }
 
     @PostMapping("/{deviceId}")
-    public ResponseEntity<ConsRecord> recordConsumption(@PathVariable Long deviceId) {
-        Device device = consRecordService.findDeviceById(deviceId); // hice cambios acá
-        if (device == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public ResponseEntity<ConsRecordDTO> recordConsumption(@PathVariable Long deviceId) {
 
-        double consumption = consRecordService.recordConsumption(device);
-        ConsRecord consRecord = new ConsRecord(device, consumption, LocalDateTime.now());
-        consRecordRepository.save(consRecord);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(consRecord);
+        ConsRecord consRecord = consRecordService.recordConsumption(deviceId);
+        ConsRecordDTO responseDTO = new ConsRecordDTO(consRecord);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    /* // Método auxiliar para obtener el dispositivo (falta añadir según la lógica de device)
-    La I.A me recomendó quitar este metodo para que el test funcione correctamente
-    private Device findDeviceById(Long deviceId) {
-        return null;
-    } */
+    @GetMapping("/{deviceId}/totalConsumption")
+    public ResponseEntity<Double> getTotalConsumption(@PathVariable Long deviceId) {
+        double totalConsumption = consRecordService.getTotalConsumption(deviceId);
+        return ResponseEntity.ok(totalConsumption);
+    }
+    
 }
